@@ -1,0 +1,2334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07091a" />
+  <meta name="description" content="杨尚儒作品集 2026 · 市场分析 / 产品优化 / 热点挖掘" />
+  <!-- inline favicon: without one the browser requests /favicon.ico and logs a 404 -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2307091a'/%3E%3Ccircle cx='32' cy='32' r='18' fill='none' stroke='%233b6cff' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%2360a5fa'/%3E%3C/svg%3E" />
+  <!-- Mark the document as "booting" before the first paint: the boot screen covers the
+       page from frame one, and the cover's staggered entrance waits for it to finish.
+       Set here (not in the body script) so there is no flash of the finished cover.
+       The boot script always removes it — plus a hard timeout as a safety net. -->
+  <script>
+    document.documentElement.classList.add('booting');
+    // The boot screen now waits for a user press, so there is deliberately no ordinary
+    // timeout. This fires ONLY if the boot script never initialised at all (JS error,
+    // blocked script) — a broken script must not leave the page hidden forever.
+    setTimeout(function () {
+      if (!window.__bootReady) document.documentElement.classList.remove('booting');
+    }, 4000);
+  </script>
+  <title>杨尚儒作品集 | Portfolio Collection 2026</title>
+  <style>
+    :root {
+      --deep: #07091a;
+      --ink: #0b0d1f;
+      --panel: rgba(15, 19, 45, 0.72);
+      --panel-border: rgba(120, 140, 255, 0.22);
+      --blue: #3b6cff;
+      --purple: #8b5cf6;
+      --violet: #c084fc;
+      --cyan: #60a5fa;
+      --text: #f3f4ff;
+      --muted: #a3b0d8;
+      --radius: 22px;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+      --glow: 0 0 60px rgba(99, 102, 241, 0.28);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: var(--deep);
+      color: var(--text);
+      font-family: "Inter", "PingFang SC", "Microsoft YaHei", "Source Han Sans SC", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---------- Animated background ---------- */
+    .bg {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(59,108,255,0.38) 0%, transparent 45%),
+        radial-gradient(circle at 80% 20%, rgba(139,92,246,0.30) 0%, transparent 40%),
+        radial-gradient(circle at 50% 85%, rgba(96,165,250,0.24) 0%, transparent 45%),
+        linear-gradient(135deg, #07091a 0%, #0f132e 50%, #0a0c22 100%);
+      background-size: 200% 200%;
+      animation: bgShift 14s ease-in-out infinite alternate;
+    }
+    .bg-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+    .grid-overlay {
+      position: fixed; inset: -60px; z-index: 1; pointer-events: none; opacity: .35;
+      background-image:
+        linear-gradient(rgba(120,140,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(120,140,255,.06) 1px, transparent 1px);
+      background-size: 46px 46px;
+      -webkit-mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 75%);
+      mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 75%);
+      transform: translate3d(calc(var(--px, 0) * -16px), calc(var(--py, 0) * -16px), 0);
+      transition: transform .35s ease-out; will-change: transform;
+    }
+    /* filmic grain + vignette for premium depth (hidden over the artwork in the viewer) */
+    .grain {
+      position: fixed; inset: 0; z-index: 90; pointer-events: none; opacity: .06;
+      mix-blend-mode: overlay; transition: opacity .4s ease;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
+      background-size: 180px 180px;
+    }
+    .vignette {
+      position: fixed; inset: 0; z-index: 2; pointer-events: none; transition: opacity .4s ease;
+      background: radial-gradient(circle at 50% 42%, transparent 42%, rgba(3,5,15,.52) 100%);
+    }
+    .orb {
+      position: fixed; border-radius: 50%;
+      filter: blur(70px); opacity: .5;
+      pointer-events: none; z-index: 0;
+    }
+    .orb-1 { width: 42vmax; height: 42vmax; top: -10vmax; left: -10vmax; background: rgba(59,108,255,0.45); animation: float1 16s ease-in-out infinite; }
+    .orb-2 { width: 34vmax; height: 34vmax; bottom: -8vmax; right: -6vmax; background: rgba(139,92,246,0.4); animation: float2 18s ease-in-out infinite; }
+    .orb-3 { width: 20vmax; height: 20vmax; top: 45%; left: 35%; background: rgba(96,165,250,0.25); animation: float3 20s ease-in-out infinite; }
+    @keyframes bgShift { from { background-position: 0% 0%; } to { background-position: 100% 100%; } }
+    @keyframes float1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(6vmax,5vmax)} }
+    @keyframes float2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-5vmax,6vmax)} }
+    @keyframes float3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(8vmax,-4vmax) scale(1.15)} }
+
+    /* Single decorative radar motif, placed in the empty top-right zone and kept BEHIND text */
+    .cover-deco {
+      position: absolute; top: 9vh; right: 5vw; width: 240px; height: 240px;
+      z-index: 0; opacity: .5; pointer-events: none; color: var(--cyan);
+      transform: translate3d(calc(var(--px, 0) * -22px), calc(var(--py, 0) * -22px), 0);
+      transition: transform .4s ease-out; will-change: transform;
+    }
+    .cover-deco svg { width: 100%; height: 100%; overflow: visible; }
+    .cover-deco .ring { fill: none; stroke: rgba(120,140,255,.22); stroke-width: 1; }
+    .cover-deco .sweep { fill: rgba(96,165,250,.12); stroke: rgba(96,165,250,.5); stroke-width: 1.2; transform-origin: 100px 100px; animation: sweep 6s linear infinite; }
+    .cover-deco .dot { fill: var(--blue); }
+    @keyframes sweep { to { transform: rotate(360deg); } }
+
+    /* giant kinetic background typography — drifts behind the cover for depth */
+    .bg-typo { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; opacity: .3; }
+    .bg-typo-track {
+      position: absolute; top: 50%; left: 0; display: inline-flex; align-items: center; gap: 54px;
+      white-space: nowrap; will-change: transform; animation: bgTypo 46s linear infinite;
+    }
+    .bg-typo-track span {
+      font-size: 19vh; font-weight: 900; letter-spacing: -.03em; line-height: 1;
+      color: transparent; -webkit-text-stroke: 1px rgba(120,140,255,.09); white-space: nowrap;
+    }
+    .bg-typo-track span.solid {
+      -webkit-text-stroke: 0; color: rgba(120,140,255,.04);
+    }
+    @keyframes bgTypo { from { transform: translate(0, -50%); } to { transform: translate(-50%, -50%); } }
+    .home:not(.active) .bg-typo-track { animation-play-state: paused; }
+
+    /* Project icons inside cards (top-right, clear of the title text) */
+    .toc-card .card-icon { position: absolute; right: 16px; top: 16px; width: 26px; height: 26px; opacity: .7; color: var(--violet); }
+    .toc-card .card-icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+    .marquee {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 3; overflow: hidden;
+      border-bottom: 1px solid rgba(120,140,255,.12);
+      background: rgba(7,9,26,.35); backdrop-filter: blur(4px);
+      padding: 7px 0;
+    }
+    .marquee-track {
+      display: inline-flex; gap: 28px; white-space: nowrap;
+      animation: marquee 24s linear infinite; will-change: transform;
+    }
+    .marquee-track span { font-size: .72rem; letter-spacing: .14em; color: var(--muted); text-transform: uppercase; }
+    .marquee-track span.dot { color: var(--purple); }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ---------- Screens ---------- */
+    .screen {
+      position: fixed; inset: 0; z-index: 10;
+      display: flex; flex-direction: column;
+      opacity: 0; pointer-events: none;
+      transform: scale(0.98);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+    .screen.active { opacity: 1; pointer-events: auto; transform: scale(1); }
+
+    /* ---------- Home ---------- */
+    .home { padding: 11vh 7vw 6vh; justify-content: space-between; }
+    .home header {
+      display: flex; align-items: center; gap: 14px; letter-spacing: .18em; font-size: .85rem;
+      color: var(--muted); text-transform: uppercase; margin-top: 2vh;
+    }
+    .home header::before {
+      content: ""; width: 38px; height: 4px; border-radius: 2px;
+      background: linear-gradient(90deg, var(--blue), var(--purple));
+      box-shadow: 0 0 14px var(--blue);
+    }
+    .hero { margin-top: 2vh; max-width: 880px; transition: transform .25s ease-out; }
+    .hero .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px; margin-bottom: 1rem;
+      font-size: .8rem; letter-spacing: .12em; color: var(--cyan); text-transform: uppercase;
+    }
+    .hero .eyebrow::before { content: ""; width: 26px; height: 1px; background: var(--cyan); }
+    .hero h1 {
+      font-size: clamp(3.4rem, 11vw, 9rem); line-height: .92; letter-spacing: -.04em; font-weight: 800;
+    }
+    .hero h1 .light { color: var(--text); }
+    .hero h1 .grad {
+      background: linear-gradient(110deg, var(--blue) 0%, var(--violet) 25%, var(--purple) 55%, var(--cyan) 80%, var(--blue) 100%);
+      background-size: 300% 300%;
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      filter: drop-shadow(0 0 32px rgba(99,102,241,.3));
+      animation: gradFlow 8s ease-in-out infinite;
+    }
+    @keyframes gradFlow { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+    .hero .sub {
+      margin-top: 1.4rem; font-size: clamp(1rem, 2vw, 1.4rem); color: var(--muted);
+      letter-spacing: .04em;
+    }
+    .hero .contact {
+      margin-top: 1.2rem; font-size: .95rem; color: #cdd4f0; line-height: 1.7;
+    }
+
+    .toc-wrap { margin-top: auto; }
+    .toc-title {
+      display: flex; align-items: center; gap: 10px; font-size: 1.2rem; font-weight: 700; margin-bottom: 16px;
+    }
+    .toc-title span.en { color: var(--muted); font-weight: 500; font-size: .95rem; letter-spacing: .1em; }
+    .toc-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;
+    }
+    .toc-card {
+      position: relative;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      padding: 22px 22px 22px 74px;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+    .toc-card::after {
+      content: ""; position: absolute; inset: 0; border-radius: var(--radius);
+      background: radial-gradient(420px circle at var(--mx,50%) var(--my,50%), rgba(139,92,246,.18), transparent 40%);
+      opacity: 0; transition: opacity .3s ease; pointer-events: none;
+    }
+    .toc-card:hover {
+      border-color: rgba(139, 92, 246, .55);
+      box-shadow: 0 24px 70px rgba(0,0,0,.5), 0 0 40px rgba(99,102,241,.18);
+    }
+    .toc-card:hover::after { opacity: 1; }
+    .toc-card .num {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%) translateZ(30px);
+      font-size: 2.8rem; font-weight: 900; line-height: 1;
+      background: linear-gradient(180deg, var(--blue), var(--purple));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      opacity: .95; transition: transform .35s cubic-bezier(.2,.8,.2,1);
+    }
+    .toc-card:hover .num { transform: translateY(-50%) translateZ(30px) scale(1.12); }
+    .toc-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; transform: translateZ(20px); }
+    .toc-card p { font-size: .82rem; color: var(--muted); line-height: 1.4; transform: translateZ(12px); }
+    .toc-card .tag {
+      display: inline-block; margin-top: 10px; font-size: .65rem; letter-spacing: .08em;
+      color: var(--violet); border: 1px solid rgba(192,132,252,.35); padding: 3px 8px; border-radius: 20px;
+      text-transform: uppercase; transform: translateZ(12px);
+    }
+    .toc-card .page-mark {
+      position: absolute; right: 18px; top: 18px; font-size: .8rem; color: var(--muted); font-variant-numeric: tabular-nums;
+    }
+
+    /* ---------- Project selection (cover) ---------- */
+    .toc-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .toc-card[data-accent="blue"]   { --acc: #3b6cff; }
+    .toc-card[data-accent="purple"] { --acc: #a855f7; }
+    .toc-card[data-accent="cyan"]   { --acc: #22d3ee; }
+    .toc-card {
+      padding: 30px 26px 34px 100px;
+      border-radius: 26px;
+      transform-style: preserve-3d; will-change: transform;
+      transition: transform .3s cubic-bezier(.2,.8,.2,1), border-color .3s ease, box-shadow .3s ease;
+    }
+    .toc-card::after {
+      background: radial-gradient(440px circle at var(--mx,50%) var(--my,50%), color-mix(in srgb, var(--acc) 24%, transparent), transparent 42%);
+    }
+    /* diagonal light sweep across the card on hover */
+    .toc-card::before {
+      content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+      background: linear-gradient(115deg, transparent 32%, rgba(255,255,255,.16) 48%, transparent 64%);
+      transform: translateX(-130%); transition: transform .75s cubic-bezier(.3,.7,.2,1);
+    }
+    .toc-card:hover::before { transform: translateX(130%); }
+    .toc-card:hover {
+      border-color: color-mix(in srgb, var(--acc) 55%, transparent);
+      box-shadow: 0 26px 80px rgba(0,0,0,.55), 0 0 46px color-mix(in srgb, var(--acc) 30%, transparent);
+    }
+    .toc-card .num {
+      left: 22px; font-size: 3rem;
+      background: linear-gradient(180deg, var(--acc), #cdd8ff);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      filter: drop-shadow(0 0 22px color-mix(in srgb, var(--acc) 35%, transparent));
+    }
+    .toc-card h3 { font-size: 1.32rem; }
+    .toc-card .en-sub {
+      display: block; margin-top: 3px; font-size: .7rem; letter-spacing: .18em;
+      color: var(--acc); text-transform: uppercase; transform: translateZ(16px);
+    }
+    .toc-card p { margin-top: 10px; }
+    .toc-card .tag {
+      color: var(--acc); border-color: color-mix(in srgb, var(--acc) 38%, transparent);
+    }
+    .toc-card .enter-hint {
+      position: absolute; right: 26px; bottom: 20px;
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: .82rem; color: var(--acc); letter-spacing: .08em;
+      opacity: 0; transform: translateY(8px); transition: opacity .3s ease, transform .3s ease;
+    }
+    .toc-card:hover .enter-hint { opacity: 1; transform: translateY(0); }
+    .toc-card .enter-hint svg { transition: transform .3s ease; }
+    .toc-card:hover .enter-hint svg { transform: translateX(5px); }
+
+    /* per-project icon motion (themed to accent) */
+    .toc-card .card-icon { width: 30px; height: 30px; opacity: .85; color: var(--acc); transition: transform .3s ease; }
+    .toc-card[data-accent="blue"]   .card-icon svg { animation: iconBob 2.6s ease-in-out infinite; }
+    .toc-card[data-accent="purple"] .card-icon svg { animation: iconPulse 2.8s ease-in-out infinite; }
+    .toc-card[data-accent="cyan"]   .card-icon svg { animation: iconSpin 9s linear infinite; }
+    .toc-card:hover .card-icon { transform: scale(1.18); }
+    @keyframes iconBob   { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes iconPulse { 0%,100% { transform: scale(1); }   50% { transform: scale(1.12); } }
+    @keyframes iconSpin  { to { transform: rotate(360deg); } }
+
+    /* custom cursor glow (desktop) */
+    .cursor-glow {
+      position: fixed; top: 0; left: 0; width: 440px; height: 440px; border-radius: 50%;
+      pointer-events: none; z-index: 5; transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(139,92,246,.16), transparent 60%);
+      mix-blend-mode: screen; opacity: 0; transition: opacity .35s ease;
+    }
+    body.cursor-on .cursor-glow { opacity: 1; }
+
+    /* magnifier cursor */
+    .cursor-lens {
+      position: fixed; top: 0; left: 0; width: 48px; height: 48px; z-index: 9999;
+      pointer-events: none; color: #dfe6ff;
+      filter: drop-shadow(0 0 5px rgba(139,92,246,.42));
+      opacity: 0; transition: opacity .3s ease;
+    }
+    body.cursor-on .cursor-lens { opacity: 1; }
+    .cursor-lens .lens-inner { transition: transform .18s ease; }
+    .cursor-lens.grow .lens-inner { transform: scale(1.4); }
+    .cursor-lens svg { width: 100%; height: 100%; }
+    body.cursor-on, body.cursor-on * { cursor: none !important; }
+
+    /* pause decorative background animations while an immersive screen is open (smoother transitions) */
+    body.off-home .bg,
+    body.off-home .orb { animation-play-state: paused; }
+    /* keep the document viewer clean: no grain / vignette over the artwork */
+    body.in-viewer .grain,
+    body.in-viewer .vignette { opacity: 0; }
+
+    /* staggered entrance */
+    .home .reveal {
+      opacity: 0; transform: translateY(26px);
+      animation: revealUp .8s cubic-bezier(.2,.8,.2,1) forwards;
+    }
+    /* landing-screen content: hidden until the screen becomes active, then staggers in */
+    .project-intro .pi-left > *, .project-intro .pi-right > * { opacity: 0; transform: translateY(24px); }
+    .project-intro.active .pi-left > *, .project-intro.active .pi-right > * {
+      animation: revealUp .7s cubic-bezier(.2,.8,.2,1) forwards;
+    }
+    @keyframes revealUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* ---------- Project intro / landing screen (circular reveal) ---------- */
+    .project-intro {
+      --acc: #8b5cf6;
+      position: fixed; inset: 0; z-index: 30;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 8vh 6vw;
+      background: radial-gradient(circle at 50% 42%, rgba(22,28,64,.55), rgba(7,9,26,.97));
+      -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+      opacity: 1; pointer-events: none;
+      -webkit-clip-path: circle(0px at 50% 50%); clip-path: circle(0px at 50% 50%);
+      transition: -webkit-clip-path .75s cubic-bezier(.7,0,.2,1), clip-path .75s cubic-bezier(.7,0,.2,1);
+    }
+    .project-intro.active { pointer-events: auto; }
+    .project-intro .pi-ghost {
+      position: absolute; left: 50%; top: -5%; transform: translateX(-50%);
+      font-size: 42vh; font-weight: 900; line-height: 1; letter-spacing: -.04em;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--acc) 24%, transparent), color-mix(in srgb, var(--acc) 8%, transparent));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      -webkit-text-stroke: 1px rgba(120,140,255,.10);
+      /* dissolve before it reaches the card → never collides with the title */
+      -webkit-mask-image: linear-gradient(180deg, #000 26%, transparent 84%);
+      mask-image: linear-gradient(180deg, #000 26%, transparent 84%);
+      pointer-events: none; user-select: none; z-index: 0;
+    }
+    .project-intro .pi-inner {
+      position: relative; z-index: 1; width: 100%; max-width: 1160px;
+      display: grid; grid-template-columns: 1.05fr 1fr; gap: 48px; align-items: center;
+      padding: 46px 54px; border-radius: 26px; text-align: left;
+      background: rgba(10,13,33,.9); border: 1px solid rgba(120,140,255,.2);
+      box-shadow: 0 30px 90px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06);
+      backdrop-filter: blur(22px);
+      transform-style: preserve-3d; will-change: transform;
+      transition: transform .35s cubic-bezier(.2,.8,.2,1);
+    }
+    .project-intro .pi-left { min-width: 0; }
+    .project-intro .pi-right { min-width: 0; padding-left: 46px; border-left: 1px solid rgba(120,140,255,.18); }
+    .project-intro .pi-code {
+      font-size: .85rem; letter-spacing: .34em; color: var(--acc); text-transform: uppercase;
+    }
+    .project-intro .pi-en {
+      margin-top: .5rem; font-size: clamp(1.9rem, 4.2vw, 3.5rem); font-weight: 800; line-height: 1.1;
+      letter-spacing: -.02em; padding-bottom: .1em;
+      -webkit-text-stroke: 1px rgba(180,195,255,.45); color: transparent;
+      background: linear-gradient(120deg, #fff, var(--acc));
+      -webkit-background-clip: text; background-clip: text;
+    }
+    .project-intro .pi-cn { margin-top: 1rem; font-size: clamp(1.25rem, 2.2vw, 1.8rem); font-weight: 700; }
+    .project-intro .pi-cn::after {
+      content: ""; display: block; width: 88px; height: 2px; margin: 14px 0 0;
+      border-radius: 2px; background: linear-gradient(90deg, var(--acc), transparent);
+      transform: scaleX(0); transform-origin: left;
+    }
+    .project-intro.active .pi-cn::after { animation: piUnderline .8s .5s cubic-bezier(.2,.8,.2,1) forwards; }
+    @keyframes piUnderline { to { transform: scaleX(1); } }
+    .project-intro .pi-tag { margin-top: 1rem; color: var(--muted); font-size: .95rem; letter-spacing: .03em; line-height: 1.5; }
+    .project-intro .pi-chips { margin-top: 1.1rem; display: flex; gap: 9px; justify-content: flex-start; flex-wrap: wrap; }
+    .project-intro .pi-chips span {
+      font-size: .68rem; letter-spacing: .08em; color: var(--acc);
+      border: 1px solid color-mix(in srgb, var(--acc) 42%, transparent); padding: 4px 11px; border-radius: 20px;
+    }
+    .project-intro .pi-meta {
+      margin-top: 1.1rem; display: flex; gap: 22px; flex-wrap: wrap;
+      font-size: .72rem; letter-spacing: .12em; color: var(--muted); text-transform: uppercase;
+    }
+    .project-intro .pi-meta b { color: var(--text); font-weight: 700; letter-spacing: .04em; }
+    .project-intro .pi-actions { margin-top: 1.7rem; display: flex; gap: 16px; justify-content: flex-start; align-items: center; }
+
+    /* right column: the project's real key points */
+    .project-intro .pi-hl-title {
+      display: flex; align-items: center; gap: 10px; font-size: .74rem; letter-spacing: .2em;
+      color: var(--acc); text-transform: uppercase;
+    }
+    .project-intro .pi-hl-title::before { content: ""; width: 22px; height: 2px; background: var(--acc); border-radius: 2px; }
+    .project-intro .pi-highlights { margin-top: 15px; display: flex; flex-direction: column; gap: 9px; }
+    .project-intro .pi-hl {
+      display: flex; align-items: flex-start; gap: 12px; padding: 11px 14px; border-radius: 13px;
+      background: rgba(255,255,255,.03); border: 1px solid rgba(120,140,255,.14);
+      transition: transform .25s ease, border-color .25s ease, background .25s ease, box-shadow .25s ease;
+    }
+    .project-intro .pi-hl:hover {
+      transform: translateX(5px);
+      border-color: color-mix(in srgb, var(--acc) 58%, transparent);
+      background: color-mix(in srgb, var(--acc) 11%, transparent);
+      box-shadow: 0 8px 24px rgba(0,0,0,.28);
+    }
+    .project-intro .pi-hl .hl-i {
+      flex: 0 0 auto; margin-top: 1px; font-size: .66rem; font-weight: 800; letter-spacing: .06em;
+      color: var(--acc); border: 1px solid color-mix(in srgb, var(--acc) 45%, transparent);
+      border-radius: 8px; padding: 2px 7px; font-variant-numeric: tabular-nums;
+    }
+    .project-intro .pi-hl .hl-t { font-size: .9rem; line-height: 1.45; color: #e6e9fb; }
+    .project-intro .pi-note {
+      margin-top: 14px; font-size: .82rem; line-height: 1.6; color: var(--muted);
+      border-left: 2px solid color-mix(in srgb, var(--acc) 55%, transparent); padding-left: 13px;
+    }
+    .btn-enter {
+      display: inline-flex; align-items: center; gap: 10px; padding: 14px 30px; border-radius: 34px;
+      font-size: 1rem; font-weight: 700; letter-spacing: .04em; cursor: pointer;
+      color: #fff; border: 1px solid var(--acc);
+      background: linear-gradient(120deg, color-mix(in srgb, var(--acc) 32%, transparent), color-mix(in srgb, var(--acc) 12%, transparent));
+      box-shadow: 0 0 0 0 var(--acc); transition: all .25s ease;
+    }
+    .btn-enter:hover { box-shadow: 0 0 36px color-mix(in srgb, var(--acc) 55%, transparent); transform: translateY(-2px); }
+    .btn-enter svg { transition: transform .25s ease; }
+    .btn-enter:hover svg { transform: translateX(6px); }
+    .btn-back {
+      font-size: .9rem; color: var(--muted); cursor: pointer; letter-spacing: .06em;
+      background: none; border: none; transition: color .2s ease;
+    }
+    .btn-back:hover { color: var(--text); }
+    .project-intro.active .pi-code       { animation-delay: .06s; }
+    .project-intro.active .pi-en         { animation-delay: .14s; }
+    .project-intro.active .pi-cn         { animation-delay: .22s; }
+    .project-intro.active .pi-tag        { animation-delay: .28s; }
+    .project-intro.active .pi-chips      { animation-delay: .34s; }
+    .project-intro.active .pi-meta       { animation-delay: .40s; }
+    .project-intro.active .pi-hl-title   { animation-delay: .30s; }
+    .project-intro.active .pi-highlights { animation-delay: .38s; }
+    .project-intro.active .pi-note       { animation-delay: .46s; }
+    .project-intro.active .pi-actions    { animation-delay: .52s; }
+
+    /* richer intro backdrop: accent aurora + orbit rings + grid + cursor spotlight */
+    .project-intro .pi-aurora { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .project-intro .pi-aurora span { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .55; }
+    .project-intro .pi-aurora .a1 { width: 60vmax; height: 60vmax; top: -20vmax; left: -16vmax; background: color-mix(in srgb, var(--acc) 42%, transparent); animation: piFloat1 18s ease-in-out infinite; }
+    .project-intro .pi-aurora .a2 { width: 46vmax; height: 46vmax; bottom: -18vmax; right: -12vmax; background: rgba(96,165,250,.32); animation: piFloat2 22s ease-in-out infinite; }
+    @keyframes piFloat1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(6vmax,5vmax) scale(1.12); } }
+    @keyframes piFloat2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-5vmax,-4vmax) scale(1.1); } }
+
+    .project-intro .pi-grid {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: .5;
+      background-image:
+        linear-gradient(rgba(120,140,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(120,140,255,.06) 1px, transparent 1px);
+      background-size: 54px 54px;
+      -webkit-mask-image: radial-gradient(circle at 50% 45%, #000 0%, transparent 68%);
+      mask-image: radial-gradient(circle at 50% 45%, #000 0%, transparent 68%);
+    }
+
+    .project-intro .pi-orbit {
+      position: absolute; left: 50%; top: 46%; width: 74vh; height: 74vh;
+      transform: translate(-50%, -50%); z-index: 0; pointer-events: none; opacity: .6;
+    }
+    .project-intro .pi-orbit svg { width: 100%; height: 100%; overflow: visible; }
+    .project-intro .pi-orbit .por { fill: none; stroke: rgba(120,140,255,.18); stroke-width: 1; }
+    .project-intro .pi-orbit .por.acc { stroke: color-mix(in srgb, var(--acc) 48%, transparent); }
+    .project-intro .pi-orbit .spin { transform-origin: 200px 200px; animation: porSpin 44s linear infinite; }
+    .project-intro .pi-orbit .spin.rev { animation: porSpin 32s linear infinite reverse; }
+    @keyframes porSpin { to { transform: rotate(360deg); } }
+
+    .project-intro .pi-spot {
+      position: absolute; left: 0; top: 0; width: 68vmax; height: 68vmax; border-radius: 50%;
+      z-index: 0; pointer-events: none;
+      transform: translate(50vw, 46vh) translate(-50%, -50%);
+      background: radial-gradient(circle, color-mix(in srgb, var(--acc) 24%, transparent), transparent 60%);
+      mix-blend-mode: screen; opacity: .85;
+    }
+
+    /* pause intro decorations while hidden */
+    .project-intro:not(.active) .pi-aurora span,
+    .project-intro:not(.active) .pi-orbit .spin { animation-play-state: paused; }
+
+    /* ---------- Viewer ---------- */
+    .viewer { background: transparent; }
+    .viewer-header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 5vw;
+      background: linear-gradient(180deg, rgba(7,9,26,.92), rgba(7,9,26,0));
+      pointer-events: none;
+    }
+    .viewer-header > * { pointer-events: auto; }
+    .viewer-title {
+      font-size: 1rem; font-weight: 700; letter-spacing: .08em;
+      background: linear-gradient(90deg, var(--blue), var(--purple)); -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .btn-home {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px; border-radius: 30px; border: 1px solid rgba(163,176,216,.35);
+      background: rgba(15,19,45,.55); color: var(--text); font-size: .85rem; cursor: pointer;
+      backdrop-filter: blur(8px); transition: all .2s ease;
+    }
+    .btn-home:hover { background: rgba(139,92,246,.2); border-color: var(--purple); }
+
+    .viewer-main {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      padding: 6.5vh 3vw 7vh; overflow: hidden; position: relative;
+    }
+    /* Oversized ghost section number behind the page — echoes the cover's big-number aesthetic
+       and fills the landscape side space so the page reads as a fullscreen slide, not a small card. */
+    .viewer-watermark {
+      position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 46vh; font-weight: 900; line-height: 1; letter-spacing: -.05em;
+      background: linear-gradient(180deg, rgba(59,108,255,.18), rgba(139,92,246,.10));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      -webkit-text-stroke: 1px rgba(120,140,255,.10);
+      pointer-events: none; user-select: none; z-index: 0;
+      white-space: nowrap; opacity: .9;
+    }
+    .page-stage {
+      position: relative; z-index: 1;
+      width: 100%; height: 100%;
+      /* fullscreen scroll container: image centers when short, scrolls when taller (or zoomed) */
+      display: flex;
+      overflow: auto;
+      touch-action: pan-y;
+      border-radius: 0;
+      transition: transform .45s cubic-bezier(.25,.8,.25,1), opacity .35s ease;
+      scrollbar-width: thin; scrollbar-color: rgba(139,92,246,.5) transparent;
+    }
+    .page-stage img {
+      display: block;
+      width: 100%;              /* fill the stage width → fullscreen feel */
+      height: auto;
+      margin: auto;             /* center when short; scrollable when tall / zoomed */
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 30px 90px rgba(0,0,0,.6), 0 0 0 1px rgba(150,170,255,.14);
+      user-select: none; -webkit-user-drag: none;
+      cursor: zoom-in;
+      transition: width .15s ease, box-shadow .25s ease;
+    }
+    .page-stage img.zoomed { cursor: grab; }
+    .page-stage img.zoomed:active { cursor: grabbing; }
+    .page-stage::-webkit-scrollbar { width: 10px; height: 10px; }
+    .page-stage::-webkit-scrollbar-thumb { background: rgba(139,92,246,.45); border-radius: 10px; }
+    .page-stage::-webkit-scrollbar-track { background: transparent; }
+
+    /* Directional slide states */
+    .page-stage.from-right { opacity: 0; transform: translateX(60px) scale(0.96); }
+    .page-stage.from-left  { opacity: 0; transform: translateX(-60px) scale(0.96); }
+    .page-stage.from-bottom{ opacity: 0; transform: translateY(50px) scale(0.96); }
+    .page-stage.from-top   { opacity: 0; transform: translateY(-50px) scale(0.96); }
+
+    .viewer-controls {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 40;
+      display: flex; align-items: center; justify-content: center; gap: 22px;
+      padding: 18px 5vw 22px;
+      background: linear-gradient(0deg, rgba(7,9,26,.95), rgba(7,9,26,0));
+      pointer-events: none;
+    }
+    .viewer-controls > * { pointer-events: auto; }
+    .ctrl-btn {
+      width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(163,176,216,.3);
+      background: rgba(15,19,45,.6); color: var(--text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; transition: all .2s ease; backdrop-filter: blur(8px);
+    }
+    .ctrl-btn:hover:not(:disabled) { background: var(--purple); border-color: var(--purple); box-shadow: 0 0 22px rgba(139,92,246,.35); }
+    .ctrl-btn:disabled { opacity: .35; cursor: not-allowed; }
+    .page-counter {
+      min-width: 76px; text-align: center; font-variant-numeric: tabular-nums;
+      font-size: .95rem; color: var(--muted); letter-spacing: .04em;
+    }
+    .page-counter b { color: var(--text); font-size: 1.1rem; }
+    .section-pill {
+      position: absolute; right: 5vw; bottom: 24px;
+      padding: 5px 12px; border-radius: 20px;
+      background: rgba(59,108,255,.18); border: 1px solid rgba(59,108,255,.35);
+      font-size: .72rem; color: var(--cyan); letter-spacing: .06em; pointer-events: auto;
+    }
+
+    /* ---------- Zoom + vertical scroll tools ---------- */
+    .header-tools {
+      display: flex; align-items: center; gap: 14px; pointer-events: auto;
+    }
+    .zoom-group {
+      display: flex; align-items: center; gap: 4px;
+      padding: 5px 8px; border-radius: 30px;
+      background: rgba(15,19,45,.6); border: 1px solid rgba(163,176,216,.28);
+      backdrop-filter: blur(8px);
+    }
+    .zoom-group .zoom-btn {
+      width: 34px; height: 34px; font-size: 1.1rem; border-radius: 50%;
+    }
+    .zoom-group .zoom-level {
+      min-width: 48px; text-align: center; font-size: .82rem; color: var(--muted);
+      font-variant-numeric: tabular-nums; letter-spacing: .02em;
+    }
+    .scroll-nav {
+      position: fixed; right: 3vw; top: 50%; transform: translateY(-50%);
+      z-index: 41; display: flex; flex-direction: column; gap: 10px;
+      opacity: 0; pointer-events: none; transition: opacity .25s ease;
+    }
+    .scroll-nav.show { opacity: 1; pointer-events: auto; }
+    .scroll-nav .ctrl-btn { width: 42px; height: 42px; font-size: 1.25rem; background: rgba(15,19,45,.72); }
+
+    /* ---------- Loader / transition ---------- */
+    .loader {
+      position: fixed; inset: 0; z-index: 100;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: var(--deep);
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s ease;
+    }
+    .loader.show { opacity: 1; pointer-events: auto; }
+    .loader-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(59,108,255,.25) 0%, transparent 55%),
+        radial-gradient(circle at 30% 70%, rgba(139,92,246,.18) 0%, transparent 45%),
+        var(--ink);
+    }
+    .spinner {
+      position: relative; width: 220px; height: 220px;
+    }
+    .arc {
+      position: absolute; inset: 0; border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: var(--blue);
+      border-right-color: var(--purple);
+      box-shadow: 0 0 24px rgba(99,102,241,.15);
+    }
+    .arc.a1 { animation: spin 2.4s linear infinite; }
+    .arc.a2 { inset: 18px; animation: spin 3s linear infinite reverse; border-top-color: var(--purple); border-right-color: var(--violet); }
+    .arc.a3 { inset: 36px; animation: spin 2s linear infinite; border-top-color: var(--cyan); border-right-color: var(--blue); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loader-core {
+      position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .loader-num {
+      font-size: 4.2rem; font-weight: 900; line-height: 1;
+      background: linear-gradient(135deg, var(--blue), var(--violet));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .loader-label { margin-top: 6px; font-size: .7rem; letter-spacing: .2em; color: var(--muted); text-transform: uppercase; }
+
+    .loader-icons {
+      margin-top: 26px; display: flex; gap: 22px; align-items: center;
+    }
+    .icon-chip {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 14px; border-radius: 30px;
+      background: rgba(255,255,255,.05); border: 1px solid rgba(163,176,216,.18);
+      font-size: .8rem; color: var(--muted);
+    }
+    .icon-chip svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .icon-chip.active { border-color: rgba(139,92,246,.5); color: var(--text); background: rgba(139,92,246,.12); }
+
+    .loader-progress {
+      margin-top: 38px; width: 180px; height: 2px; background: rgba(255,255,255,.08); border-radius: 2px; overflow: hidden;
+    }
+    .loader-progress span {
+      display: block; height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--blue), var(--purple));
+      transition: width .1s linear;
+    }
+
+    /* Responsive */
+    @media (max-width: 1040px) {
+      .project-intro .pi-inner { grid-template-columns: 1fr; gap: 26px; padding: 34px 30px; }
+      .project-intro .pi-right { padding-left: 0; border-left: none; border-top: 1px solid rgba(120,140,255,.18); padding-top: 24px; }
+    }
+    @media (max-height: 720px) {
+      .project-intro .pi-inner { padding: 30px 40px; }
+      .project-intro .pi-note { display: none; }
+      .project-intro .pi-en { font-size: clamp(1.6rem, 3.4vw, 2.4rem); }
+    }
+    @media (max-height: 940px) {
+      .home { padding: 9vh 7vw 5vh; }
+      .hero h1 { font-size: clamp(3rem, 9vw, 7rem); }
+      .hero .contact { margin-top: .9rem; }
+      .toc-card { padding: 26px 22px 30px 96px; }
+    }
+    @media (max-width: 1300px) {
+      .cover-deco { display: none; }
+    }
+    @media (max-width: 720px) {
+      .home { padding: 13vh 6vw 5vh; }
+      .hero h1 { font-size: 3rem; }
+      .toc-grid { grid-template-columns: 1fr; }
+      .page-stage img { max-height: 78vh; max-width: 92vw; }
+      .viewer-watermark { font-size: 40vh; }
+      .viewer-controls { gap: 14px; padding-bottom: 18px; }
+      .section-pill { display: none; }
+    }
+
+    /* ================= BOOT / ENTRANCE SEQUENCE =================
+       Shown once on load, before the cover. Tech "system boot": a scanning
+       grid, a progress ring, a typed status log and a real progress readout,
+       then the whole layer collapses into a horizontal light streak and
+       hands over to the cover. Deep-space navy + blue/violet, on palette. */
+    html { background: #07091a; }
+
+    .boot { display: none; }
+    /* `.boot.exit` repeats the box so the section keeps painting while it collapses —
+       it has to survive the removal of `booting`, which happens at the start of the
+       exit so the cover can stagger in *behind* the closing shutter. */
+    html.booting .boot, .boot.exit {
+      display: block;
+      position: fixed; inset: 0; z-index: 300; overflow: hidden;
+      transform-origin: 50% 50%; will-change: transform, opacity;
+      background:
+        radial-gradient(circle at 50% 44%, rgba(59,108,255,.20) 0%, transparent 58%),
+        linear-gradient(160deg, #060814 0%, #0b0f26 52%, #070a1c 100%);
+    }
+    /* hold the cover's staggered entrance until the boot hands over */
+    html.booting .home .reveal { animation-play-state: paused; }
+
+    .boot-grid {
+      position: absolute; inset: -40px; opacity: 0;
+      background-image:
+        linear-gradient(rgba(120,140,255,.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(120,140,255,.07) 1px, transparent 1px);
+      background-size: 52px 52px;
+      -webkit-mask-image: radial-gradient(circle at 50% 46%, #000 0%, transparent 72%);
+      mask-image: radial-gradient(circle at 50% 46%, #000 0%, transparent 72%);
+      /* drifts with the cursor. The entrance animation only touches opacity, so this
+         transform is never overridden by it. */
+      transform: translate3d(calc(var(--px, 0) * -18px), calc(var(--py, 0) * -18px), 0);
+      transition: transform .5s cubic-bezier(.2,.8,.2,1);
+      will-change: transform;
+      animation: bootGridIn 1.1s cubic-bezier(.2,.8,.2,1) both;
+    }
+    @keyframes bootGridIn { from { opacity: 0; } to { opacity: .55; } }
+
+    /* slow travelling scan band */
+    /* soft travelling glow band — both ends must feather, or the fast falloff on the
+       leading edge reads as a hard seam across the screen instead of a light sweep */
+    .boot-scan {
+      position: absolute; left: 0; right: 0; top: -180px; height: 180px;
+      background: linear-gradient(180deg,
+        transparent 0%,
+        rgba(96,165,250,.02) 34%,
+        rgba(170,205,255,.085) 62%,
+        rgba(96,165,250,.02) 88%,
+        transparent 100%);
+      animation: bootScan 3.6s linear infinite;
+    }
+    @keyframes bootScan { to { transform: translateY(calc(100vh + 360px)); } }
+
+    /* HUD corner brackets */
+    .boot-hud span {
+      position: absolute; width: 34px; height: 34px; opacity: 0;
+      border: 1px solid rgba(120,140,255,.55);
+      animation: bootFade .8s .35s ease both;
+    }
+    .boot-hud .tl { top: 34px; left: 34px; border-right: 0; border-bottom: 0; }
+    .boot-hud .tr { top: 34px; right: 34px; border-left: 0; border-bottom: 0; }
+    .boot-hud .bl { bottom: 34px; left: 34px; border-right: 0; border-top: 0; }
+    .boot-hud .br { bottom: 34px; right: 34px; border-left: 0; border-top: 0; }
+
+    /* HUD reticle — a faint crosshair through the instrument cluster */
+    .boot-reticle {
+      position: absolute; left: 50%; top: 44%; width: 74vmin; height: 74vmin; z-index: 1;
+      /* only opacity is animated, so the cursor-parallax transform is never overridden.
+         The base value equals the keyframe's end value so `animation: none`
+         (reduced-motion / exit) leaves it looking identical. */
+      transform: translate(-50%, -50%) translate3d(calc(var(--px, 0) * 9px), calc(var(--py, 0) * 9px), 0);
+      transition: transform .5s cubic-bezier(.2,.8,.2,1);
+      pointer-events: none; opacity: .5;
+      animation: reticleIn 1.5s .4s ease both;
+    }
+    @keyframes reticleIn { from { opacity: 0; } to { opacity: .5; } }
+    .boot-reticle::before, .boot-reticle::after {
+      content: ""; position: absolute; left: 50%; top: 50%; background: rgba(120,140,255,.16);
+    }
+    .boot-reticle::before { width: 100%; height: 1px; transform: translate(-50%, -50%); }
+    .boot-reticle::after { width: 1px; height: 100%; transform: translate(-50%, -50%); }
+
+    /* measurement ruler under the header — major + minor ticks */
+    .boot-ruler {
+      position: absolute; left: 78px; right: 78px; top: 72px; height: 7px; z-index: 2; opacity: .45;
+      background-image:
+        repeating-linear-gradient(90deg, rgba(120,140,255,.55) 0 1px, transparent 1px 44px),
+        repeating-linear-gradient(90deg, rgba(120,140,255,.26) 0 1px, transparent 1px 11px);
+      background-size: 100% 7px, 100% 3px;
+      background-repeat: repeat-x, repeat-x;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+      animation: rulerIn 1s .6s ease both;
+    }
+    @keyframes rulerIn { from { opacity: 0; } to { opacity: .45; } }
+
+    /* --- telemetry rails: instrument density on both edges ---
+       Both rails share a fixed height so their headings sit on the same baseline —
+       unequal heights would leave the two columns 40px out of register. --- */
+    .boot-rail {
+      position: absolute; top: 50%; z-index: 2; width: 152px; height: 205px;
+      display: flex; flex-direction: column;
+      transform: translateY(-50%);
+      font-size: .6rem; letter-spacing: .13em; text-transform: uppercase;
+      color: rgba(163,176,216,.6); font-variant-numeric: tabular-nums;
+      animation: bootFade 1s .7s ease both;
+    }
+    .boot-rail.rl { left: 30px; }
+    .boot-rail.rr { right: 30px; text-align: right; }
+    .rail-h { display: block; margin-bottom: 10px; font-size: .55rem; letter-spacing: .3em; color: rgba(96,165,250,.8); }
+    .rail-h::after {
+      content: ""; display: block; margin-top: 6px; height: 1px;
+      background: linear-gradient(90deg, rgba(120,140,255,.45), transparent);
+    }
+    .boot-rail.rr .rail-h::after { background: linear-gradient(270deg, rgba(120,140,255,.45), transparent); }
+    .rail-rows { display: flex; flex-direction: column; gap: 7px; }
+    .rail-rows .r { display: flex; justify-content: space-between; gap: 8px; white-space: nowrap; }
+    .boot-rail.rr .rail-rows .r { justify-content: flex-end; }
+    .rail-rows .r b { color: rgba(226,232,255,.92); font-weight: 600; }
+    /* the datalink column scrolls. Gap is zeroed and folded into a per-row margin so
+       that translating exactly -50% lands pixel-perfect for a seamless loop. */
+    .rail-mask {
+      flex: 1; min-height: 0; overflow: hidden;
+      -webkit-mask-image: linear-gradient(180deg, transparent, #000 16%, #000 84%, transparent);
+      mask-image: linear-gradient(180deg, transparent, #000 16%, #000 84%, transparent);
+    }
+    .rail-rows.scroll { gap: 0; animation: railScroll 9s linear infinite; }
+    .rail-rows.scroll .r { margin-bottom: 7px; color: rgba(139,160,220,.5); }
+    .rail-rows.scroll .r em { font-style: normal; color: rgba(96,165,250,.9); }
+    @keyframes railScroll { to { transform: translateY(-50%); } }
+
+    .boot-telemetry { color: rgba(96,165,250,.85); font-variant-numeric: tabular-nums; }
+
+    /* the caption above the dial — states what the gate is doing right now */
+    .boot-core .core-tag {
+      font-size: .58rem; letter-spacing: .36em; text-transform: uppercase;
+      color: rgba(96,165,250,.78); font-variant-numeric: tabular-nums;
+      animation: bootFade .9s .45s ease both;
+    }
+
+    .boot-top {
+      position: absolute; top: 42px; left: 0; right: 0; z-index: 2;
+      display: flex; justify-content: space-between; padding: 0 78px;
+      font-size: .68rem; letter-spacing: .32em; text-transform: uppercase;
+      color: rgba(163,176,216,.72);
+      animation: bootFade .9s .2s ease both;
+    }
+    .boot-brand { color: var(--text); }
+    .boot-brand i { color: var(--blue); font-style: normal; margin: 0 7px; }
+    .boot-ver { font-variant-numeric: tabular-nums; }
+
+    /* progress ring + monogram */
+    .boot-core {
+      position: absolute; left: 50%; top: 44%; transform: translate(-50%, -50%);
+      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 26px;
+    }
+    .boot-ringwrap {
+      position: relative; display: grid; place-items: center;
+      width: min(42vh, 330px); height: min(42vh, 330px);
+    }
+    .boot-ringwrap svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+
+    /* deploy sweep: fills the hole the START button leaves behind. Hidden while the
+       gate is idle (the button owns the middle), revealed the moment loading starts. */
+    .core-spin {
+      position: absolute; inset: 0; margin: auto; width: 34%; aspect-ratio: 1 / 1;
+      border-radius: 50%; opacity: 0; pointer-events: none;
+      background: conic-gradient(from 0deg,
+        transparent 0deg 196deg,
+        rgba(96,165,250,.14) 252deg,
+        rgba(150,200,255,.95) 348deg,
+        transparent 360deg);
+      -webkit-mask-image: radial-gradient(circle, transparent 58%, #000 63%, #000 91%, transparent 96%);
+      mask-image: radial-gradient(circle, transparent 58%, #000 63%, #000 91%, transparent 96%);
+      animation: coreSpin 1.7s linear infinite;
+      transition: opacity .45s ease .22s;
+    }
+    .boot-ringwrap.started .core-spin { opacity: 1; }
+    @keyframes coreSpin { to { transform: rotate(360deg); } }
+    .br-track { fill: none; stroke: rgba(120,140,255,.16); stroke-width: 1.4; }
+    .br-arc {
+      fill: none; stroke: url(#bootGrad); stroke-width: 2.8; stroke-linecap: round;
+      filter: drop-shadow(0 0 10px rgba(96,165,250,.65));
+    }
+    .br-dash {
+      fill: none; stroke: rgba(120,140,255,.26); stroke-width: 1;
+      stroke-dasharray: 2 9;
+      transform-box: fill-box; transform-origin: center;
+      animation: bootSpin 26s linear infinite;
+    }
+    .br-dash2 {
+      fill: none; stroke: rgba(139,92,246,.32); stroke-width: 1;
+      stroke-dasharray: 30 16;
+      transform-box: fill-box; transform-origin: center;
+      animation: bootSpin 17s linear infinite reverse;
+    }
+    @keyframes bootSpin { to { transform: rotate(360deg); } }
+
+    /* --- START button. Nothing is preloaded until this is pressed, so the bar can
+           never lie: it only ever reports work that has actually happened. --- */
+    .boot-start {
+      position: relative; justify-self: center; align-self: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+      width: 44%; aspect-ratio: 1 / 1; min-width: 96px;
+      border: 1px solid color-mix(in srgb, var(--blue) 55%, transparent);
+      border-radius: 50%; cursor: pointer; font: inherit; color: var(--text);
+      background:
+        radial-gradient(circle at 50% 28%, rgba(96,165,250,.24), transparent 62%),
+        rgba(10,14,34,.74);
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+      box-shadow: 0 0 34px rgba(59,108,255,.30), inset 0 0 26px rgba(96,165,250,.14);
+      /* `backwards` (not `both`) so the finished animation does not freeze opacity
+         and block the `.gone` state below */
+      animation: bootStartIn .9s .3s cubic-bezier(.2,.8,.2,1) backwards;
+      transition: transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s ease,
+                  border-color .28s ease, opacity .32s ease, filter .28s ease;
+    }
+    @keyframes bootStartIn { from { opacity: 0; transform: scale(.78); filter: blur(6px); } }
+
+    /* the standby pulse — what makes the idle state read as "waiting", not "stuck" */
+    .boot-start::after {
+      content: ""; position: absolute; inset: -7px; border-radius: 50%; pointer-events: none;
+      border: 1px solid color-mix(in srgb, var(--cyan) 60%, transparent);
+      animation: bootPulse 2.7s cubic-bezier(.2,.7,.3,1) infinite;
+    }
+    @keyframes bootPulse {
+      0%   { transform: scale(.86); opacity: .85; }
+      70%  { transform: scale(1.42); opacity: 0; }
+      100% { transform: scale(1.42); opacity: 0; }
+    }
+
+    .boot-start .bs-play {
+      width: 19px; height: 19px; fill: var(--cyan);
+      filter: drop-shadow(0 0 9px rgba(96,165,250,.85));
+      transition: transform .28s ease;
+    }
+    .boot-start .bs-label {
+      font-size: .76rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+      color: #eaf0ff; transform: translateX(.1em);
+    }
+    .boot-start:hover, .boot-start:focus-visible {
+      transform: scale(1.07);
+      border-color: color-mix(in srgb, var(--cyan) 82%, transparent);
+      box-shadow: 0 0 64px rgba(96,165,250,.55), inset 0 0 30px rgba(96,165,250,.22);
+      outline: none;
+    }
+    .boot-start:hover .bs-play { transform: scale(1.16); }
+    .boot-start:active { transform: scale(.96); }
+    /* pressed: the button scales out of the way and stops taking input */
+    .boot-start.gone { opacity: 0; transform: scale(1.6); pointer-events: none; filter: blur(4px); }
+    .boot-start.gone::after { display: none; }
+
+    .boot-pct {
+      display: flex; align-items: baseline; gap: 3px;
+      font-size: .78rem; letter-spacing: .2em; color: var(--cyan);
+      font-variant-numeric: tabular-nums;
+      animation: bootFade .9s .5s ease both;
+      transition: color .35s ease;
+    }
+    .boot-pct b { font-size: 1.45rem; font-weight: 800; letter-spacing: .04em; color: var(--text); transition: color .35s ease; }
+    /* dimmed while idling — uses colour, not opacity, because the bootFade animation
+       keeps `opacity` pinned at 1 via its `both` fill mode */
+    .boot-pct.idle { color: rgba(96,165,250,.45); }
+    .boot-pct.idle b { color: rgba(163,176,216,.5); }
+
+    /* typed status log */
+    .boot-log {
+      position: absolute; left: 78px; bottom: 112px; z-index: 2;
+      display: flex; flex-direction: column; gap: 8px;
+      font-size: .73rem; letter-spacing: .12em; text-transform: uppercase;
+      color: rgba(163,176,216,.8); font-variant-numeric: tabular-nums;
+      max-width: min(48vw, 460px);
+    }
+    .boot-line { display: flex; align-items: center; gap: 10px; opacity: 0; animation: bootLineIn .32s ease forwards; }
+    .boot-line i { font-style: normal; color: var(--blue); }
+    /* a fixed rem column, not `ch`: `ch` is the width of "0", and these labels are
+       uppercase + letter-spaced, so they run far wider than their character count and
+       would shove the status column out of alignment on the longer lines. */
+    .boot-line span { display: inline-block; min-width: 18rem; color: var(--text); }
+    .boot-line em {
+      font-style: normal; font-size: .6rem; letter-spacing: .2em;
+      color: var(--cyan); opacity: 0; transition: opacity .25s ease;
+    }
+    .boot-line.done em { opacity: 1; }
+    /* live row (artwork manifest): shows the real decoded count while it runs */
+    .boot-line.live em { opacity: 1; }
+    .boot-line.live em.pending { color: rgba(163,176,216,.85); }
+    /* standby rows: no fixed-width status column, plus a blinking block cursor */
+    .boot-line.idle span { min-width: 0; color: rgba(206,216,255,.88); }
+    .boot-line .cur {
+      display: inline-block; width: 7px; height: 12px; margin-left: 2px;
+      background: var(--cyan); box-shadow: 0 0 8px rgba(96,165,250,.8);
+      animation: bootCursor 1.05s steps(1) infinite;
+    }
+    @keyframes bootCursor { 0%, 49.9% { opacity: 1; } 50%, 100% { opacity: 0; } }
+    /* container fade used when swapping the standby log for the real load log */
+    .boot-log { transition: opacity .22s ease; }
+    .boot-log.swap { opacity: 0; }
+    @keyframes bootLineIn { from { opacity: 0; transform: translateX(-9px); } to { opacity: 1; transform: none; } }
+
+    /* linear progress bar */
+    .boot-bar {
+      position: absolute; left: 78px; right: 78px; bottom: 76px; height: 2px; z-index: 2;
+      background: rgba(120,140,255,.16); border-radius: 2px; overflow: hidden;
+      animation: bootFade .9s .3s ease both;
+    }
+    .boot-bar span {
+      display: block; height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan) 55%, var(--violet));
+      box-shadow: 0 0 16px rgba(96,165,250,.85);
+      transition: width .18s linear;
+    }
+
+    .boot-foot {
+      position: absolute; left: 0; right: 0; bottom: 40px; z-index: 2;
+      display: flex; justify-content: space-between; padding: 0 78px;
+      font-size: .63rem; letter-spacing: .28em; text-transform: uppercase;
+      color: rgba(163,176,216,.5);
+      animation: bootFade .9s .4s ease both;
+    }
+    .boot-hint { color: var(--cyan); opacity: 0; transition: opacity .5s ease; }
+    .boot-hint.show { animation: bootBlink 1.9s ease-in-out infinite; }
+    @keyframes bootBlink { 0%, 100% { opacity: .3; } 50% { opacity: .95; } }
+
+    @keyframes bootFade { from { opacity: 0; } to { opacity: 1; } }
+
+    /* --- exit: everything snaps off, then the whole layer collapses into a
+           horizontal light streak (the "power down / jump" moment) --- */
+    .boot-flash {
+      display: none;
+      position: fixed; left: 0; right: 0; top: 50%; height: 2px; z-index: 320;
+      pointer-events: none;
+      transform: translateY(-50%) scaleX(0); opacity: 0;
+      background: linear-gradient(90deg, transparent, var(--cyan) 18%, #ffffff 50%, var(--violet) 82%, transparent);
+      box-shadow: 0 0 18px rgba(255,255,255,.9), 0 0 60px rgba(96,165,250,1), 0 0 170px rgba(139,92,246,.85);
+    }
+    html.booting .boot-flash, .boot-flash.on { display: block; }
+    /* `animation: none` is load-bearing here: every one of these layers enters via
+       `bootFade`/`bootScan` with fill-mode `both`, and a running (or fill-locked)
+       animation beats a plain `opacity` declaration no matter how specific it is.
+       Without it the layer sits at its animated end value and never fades at all. */
+    .boot.exit .boot-top,
+    .boot.exit .boot-foot,
+    .boot.exit .boot-core,
+    .boot.exit .boot-log,
+    .boot.exit .boot-bar,
+    .boot.exit .boot-scan,
+    .boot.exit .boot-ruler,
+    .boot.exit .boot-rail,
+    .boot.exit .boot-reticle,
+    .boot.exit .boot-hud span { animation: none; opacity: 0; transition: opacity .24s ease; }
+
+    .boot.exit { animation: bootCollapse .78s cubic-bezier(.72,0,.2,1) .16s both; }
+    @keyframes bootCollapse {
+      0%   { transform: scaleY(1);    opacity: 1; }
+      46%  { transform: scaleY(.004); opacity: 1; }
+      70%  { transform: scaleY(.004); opacity: 1; }
+      100% { transform: scaleY(.004); opacity: 0; }
+    }
+    .boot-flash.on { animation: bootFlash 1s cubic-bezier(.45,0,.25,1) .16s both; }
+    @keyframes bootFlash {
+      0%   { opacity: 0; transform: translateY(-50%) scaleX(.04); }
+      26%  { opacity: 1; transform: translateY(-50%) scaleX(1); }
+      52%  { opacity: 1; transform: translateY(-50%) scaleX(1); }
+      100% { opacity: 0; transform: translateY(-50%) scaleX(1); }
+    }
+
+    /* --- rails / ruler only make sense while there is room for them --- */
+    @media (max-width: 1280px) {
+      .boot-rail { width: 126px; height: 182px; font-size: .54rem; letter-spacing: .1em; }
+      .boot-rail.rl { left: 22px; }
+      .boot-rail.rr { right: 22px; }
+      .boot-ruler { left: 58px; right: 58px; }
+    }
+    @media (max-width: 1120px) {
+      .boot-rail { display: none; }
+    }
+    @media (max-height: 780px) {
+      .boot-rail { height: 168px; }
+    }
+
+    @media (max-width: 900px) {
+      .boot-top, .boot-foot { padding: 0 40px; }
+      .boot-log { left: 40px; bottom: 100px; font-size: .66rem; }
+      .boot-bar { left: 40px; right: 40px; bottom: 68px; }
+      .boot-ruler { left: 34px; right: 34px; top: 62px; }
+      .boot-hud span { width: 24px; height: 24px; }
+      .boot-hud .tl, .boot-hud .tr { top: 24px; }
+      .boot-hud .bl, .boot-hud .br { bottom: 24px; }
+      .boot-hud .tl, .boot-hud .bl { left: 24px; }
+      .boot-hud .tr, .boot-hud .br { right: 24px; }
+    }
+    @media (max-width: 720px) {
+      .boot-line span { min-width: 0; }
+      .boot-line em { display: none; }
+      .boot-ringwrap { width: 62vw; height: 62vw; }
+      .boot-telemetry { display: none; }
+      .boot-ruler { display: none; }
+      /* the credit line and the hint would each wrap to two lines side by side here,
+         which reads as overlapping text. On a phone only the hint matters, and it
+         needs the full width to stay on one line. */
+      .boot-foot { justify-content: center; }
+      .boot-credit { display: none; }
+      .boot-hint { text-align: center; }
+    }
+    @media (max-height: 700px) {
+      .boot-log { display: none; }
+      .boot-rail { display: none; }
+      .boot-ruler, .boot-reticle { display: none; }
+      .boot-core { gap: 18px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .boot-scan, .br-dash, .br-dash2, .rail-rows.scroll, .core-spin { animation: none; }
+      .boot-grid, .boot-reticle { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- BOOT / ENTRANCE SEQUENCE — a real gate, not decoration: it idles until the
+       visitor presses START, and only then preloads every artwork page. The progress
+       readout therefore always reflects work that has genuinely been done. -->
+  <section id="boot" class="boot">
+    <div class="boot-grid" aria-hidden="true"></div>
+    <div class="boot-scan" aria-hidden="true"></div>
+    <div class="boot-hud" aria-hidden="true"><span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span></div>
+    <div class="boot-reticle" aria-hidden="true"></div>
+    <div class="boot-ruler" aria-hidden="true"></div>
+
+    <div class="boot-top" aria-hidden="true">
+      <span class="boot-brand">杨尚儒<i>/</i>PORTFOLIO</span>
+      <span class="boot-ver">SYS.BOOT &nbsp;v2.6</span>
+    </div>
+
+    <div class="boot-core">
+      <div class="core-tag" id="bootCoreTag">STANDBY · AWAITING OPERATOR</div>
+      <div class="boot-ringwrap" id="bootRing">
+        <svg viewBox="0 0 240 240" aria-hidden="true">
+          <defs>
+            <linearGradient id="bootGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#3b6cff"/>
+              <stop offset=".5" stop-color="#60a5fa"/>
+              <stop offset="1" stop-color="#c084fc"/>
+            </linearGradient>
+          </defs>
+          <circle class="br-track" cx="120" cy="120" r="108"/>
+          <circle class="br-arc" id="bootArc" cx="120" cy="120" r="108" transform="rotate(-90 120 120)"/>
+          <circle class="br-dash" cx="120" cy="120" r="90"/>
+          <circle class="br-dash2" cx="120" cy="120" r="74"/>
+        </svg>
+        <button class="boot-start" id="bootStart" type="button" aria-label="开始加载作品集">
+          <svg class="bs-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.4v13.2L19 12z"/></svg>
+          <span class="bs-label">START</span>
+        </button>
+        <div class="core-spin" aria-hidden="true"></div>
+      </div>
+      <div class="boot-pct idle" id="bootPctWrap"><b id="bootPct">00</b><span>%</span></div>
+    </div>
+
+    <div class="boot-log" id="bootLog" aria-hidden="true"></div>
+    <div class="boot-bar" aria-hidden="true"><span id="bootBarFill"></span></div>
+
+    <!-- instrument rails: real session data on the left, a scrolling datalink
+         readout on the right. Both are decoration for screen readers. -->
+    <aside class="boot-rail rl" aria-hidden="true">
+      <span class="rail-h">Session · 会话</span>
+      <div class="rail-rows">
+        <div class="r"><span>OPERATOR</span><b>杨尚儒</b></div>
+        <div class="r"><span>LOCAL TIME</span><b id="telClock">--:--:--</b></div>
+        <div class="r"><span>TIMEZONE</span><b id="telTz">UTC+08</b></div>
+        <div class="r"><span>VIEWPORT</span><b id="telRes">—</b></div>
+        <div class="r"><span>ARTWORK PAGES</span><b id="telPages">—</b></div>
+        <div class="r"><span>ASSET TIER</span><b id="telTier">—</b></div>
+        <div class="r"><span>UPTIME</span><b id="telUptime">--:--</b></div>
+        <div class="r"><span>LOCALE</span><b id="telLocale">—</b></div>
+        <div class="r"><span>NETWORK</span><b id="telNet">—</b></div>
+        <div class="r"><span>GATE</span><b id="telGate">STANDBY</b></div>
+      </div>
+    </aside>
+
+    <aside class="boot-rail rr" aria-hidden="true">
+      <span class="rail-h">Datalink · 数据链</span>
+      <div class="rail-mask">
+        <div class="rail-rows scroll" id="railStream"></div>
+      </div>
+    </aside>
+
+    <div class="boot-foot">
+      <span class="boot-credit" aria-hidden="true">作品集 · 2026 &nbsp;市场分析 / 产品优化 / 热点挖掘</span>
+      <span class="boot-telemetry" aria-hidden="true" id="bootTelemetry">LINK 0/11 · STANDBY</span>
+      <span class="boot-hint" id="bootHint">按下 START 开始加载作品资源</span>
+    </div>
+
+  </section>
+
+  <!-- hand-over light streak — deliberately OUTSIDE the boot section: the section
+       collapses with scaleY(), which would flatten this 2px line into nothing -->
+  <div class="boot-flash" id="bootFlash" aria-hidden="true"></div>
+
+  <div class="bg"></div>
+  <div class="vignette"></div>
+  <div class="grain"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <canvas id="bgCanvas" class="bg-canvas"></canvas>
+  <div class="grid-overlay"></div>
+  <div class="cursor-glow"></div>
+  <div class="cursor-lens"><div class="lens-inner"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="20" cy="20" r="13" fill="rgba(223,230,255,.05)"/><line x1="29.5" y1="29.5" x2="42" y2="42"/></svg></div></div>
+
+  <!-- HOME / COVER -->
+  <section id="home" class="screen home active">
+    <div class="bg-typo" aria-hidden="true">
+      <div class="bg-typo-track">
+        <span>PORTFOLIO</span><span class="solid">COLLECTION</span><span>2026</span><span class="solid">市场分析</span>
+        <span>PORTFOLIO</span><span class="solid">COLLECTION</span><span>2026</span><span class="solid">市场分析</span>
+      </div>
+    </div>
+    <div class="marquee">
+      <div class="marquee-track">
+        <span>Portfolio Collection 2026</span><span class="dot">●</span>
+        <span>Market Analysis</span><span class="dot">●</span>
+        <span>Product Optimization</span><span class="dot">●</span>
+        <span>AIDA Poster</span><span class="dot">●</span>
+        <span>AI Trend Engine</span><span class="dot">●</span>
+        <span>Hotspot Radar</span><span class="dot">●</span>
+        <span>Portfolio Collection 2026</span><span class="dot">●</span>
+        <span>Market Analysis</span><span class="dot">●</span>
+        <span>Product Optimization</span><span class="dot">●</span>
+        <span>AIDA Poster</span><span class="dot">●</span>
+        <span>AI Trend Engine</span><span class="dot">●</span>
+        <span>Hotspot Radar</span><span class="dot">●</span>
+      </div>
+    </div>
+
+    <div class="cover-deco">
+      <svg viewBox="0 0 200 200">
+        <circle class="ring" cx="100" cy="100" r="90"/>
+        <circle class="ring" cx="100" cy="100" r="62"/>
+        <circle class="ring" cx="100" cy="100" r="34"/>
+        <path class="sweep" d="M100,100 L100,10 A90,90 0 0 1 190,100 Z"/>
+        <circle class="dot" cx="100" cy="100" r="3.5"/>
+        <circle class="dot" cx="148" cy="74" r="2.4"/>
+        <circle class="dot" cx="70" cy="138" r="2.4"/>
+      </svg>
+    </div>
+
+    <header class="reveal" style="animation-delay:.1s">Portfolio Collection · 2026</header>
+    <div class="hero reveal" style="animation-delay:.2s">
+      <div class="eyebrow">Selected Works · 2026.09</div>
+      <h1>
+        <span class="light">PORTFOLIO</span><br/>
+        <span class="grad">COLLECTION</span>
+      </h1>
+      <p class="sub">三个项目 · 市场分析 / 产品优化 / 品牌海报 / 热点挖掘</p>
+      <p class="contact">
+        作品集创作者：杨尚儒<br/>
+        电话：15827362875 · 邮箱：2058898426@qq.com
+      </p>
+    </div>
+
+    <div class="toc-wrap">
+      <div class="toc-title reveal" style="animation-delay:.35s">项目选择 <span class="en">SELECT PROJECT</span></div>
+      <div class="toc-grid">
+        <div class="toc-card reveal" data-target="2" data-section="01" data-accent="blue" data-name="XIAOMI EV SERVICE" style="animation-delay:.45s">
+          <div class="num">01</div>
+          <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M14 16H9l-3 2.5V16H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2z"/><circle cx="6.5" cy="14" r="1.5"/><circle cx="13.5" cy="14" r="1.5"/><path d="M4 9h9"/><path d="M15 9l2-2h3"/></svg></div>
+          <h3>小米汽车售后服务包</h3>
+          <span class="en-sub">XIAOMI EV SERVICE</span>
+          <p>市场分析及产品优化 · 服务策略全景</p>
+          <span class="tag">Market Analysis</span>
+          <span class="enter-hint">进入项目 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </div>
+        <div class="toc-card reveal" data-target="4" data-section="02" data-accent="purple" data-name="Worry-free Poster" style="animation-delay:.55s">
+          <div class="num">02</div>
+          <div class="card-icon"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16"/><path d="M9 3v18"/><circle cx="14.5" cy="14" r="2.6"/></svg></div>
+          <h3>小米无忧服务包海报设计</h3>
+          <span class="en-sub">WORRY-FREE POSTER</span>
+          <p>平台运营宣传海报 · AIDA 转化海报</p>
+          <span class="tag">Poster &amp; AIDA</span>
+          <span class="enter-hint">进入项目 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </div>
+        <div class="toc-card reveal" data-target="8" data-section="03" data-accent="cyan" data-name="DOUHAONIAO ENGINE" style="animation-delay:.65s">
+          <div class="num">03</div>
+          <div class="card-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3"/><path d="M12 19v3"/><path d="M2 12h3"/><path d="M19 12h3"/><path d="M4.93 4.93l2.12 2.12"/><path d="M16.95 16.95l2.12 2.12"/><path d="M4.93 19.07l2.12-2.12"/><path d="M16.95 7.05l2.12-2.12"/></svg></div>
+          <h3>抖好鸟热点挖掘平台</h3>
+          <span class="en-sub">DOUHAONIAO ENGINE</span>
+          <p>AI 市场相结合 · 热点 + 内容 + 数据分析</p>
+          <span class="tag">AI Trend Engine</span>
+          <span class="enter-hint">进入项目 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENT VIEWER -->
+  <section id="viewer" class="screen viewer">
+    <div class="viewer-header">
+      <div class="viewer-title">PORTFOLIO COLLECTION</div>
+      <div class="header-tools">
+        <div class="zoom-group">
+          <button class="ctrl-btn zoom-btn" id="btnZoomOut" aria-label="缩小">−</button>
+          <span class="zoom-level" id="zoomLevel">100%</span>
+          <button class="ctrl-btn zoom-btn" id="btnZoomIn" aria-label="放大">+</button>
+          <button class="ctrl-btn zoom-btn" id="btnZoomReset" aria-label="适应宽度" title="适应宽度">⤢</button>
+        </div>
+        <button class="btn-home" id="btnHome" aria-label="返回目录">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          返回目录
+        </button>
+      </div>
+    </div>
+
+    <div class="viewer-main">
+      <div class="viewer-watermark" id="viewerWatermark">00</div>
+      <div class="page-stage" id="pageStage">
+        <img id="pageImg" src="" alt="作品集页面" />
+      </div>
+    </div>
+
+    <div class="viewer-controls">
+      <button class="ctrl-btn" id="btnPrev" aria-label="上一页">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="page-counter"><b id="curPage">01</b> / <span id="totPage">11</span></div>
+      <button class="ctrl-btn" id="btnNext" aria-label="下一页">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+      <div class="section-pill" id="sectionPill">封面</div>
+    </div>
+
+    <!-- Vertical scroll buttons for long / zoomed images -->
+    <div class="scroll-nav" id="scrollNav">
+      <button class="ctrl-btn" id="btnScrollUp" aria-label="向上滚动">↑</button>
+      <button class="ctrl-btn" id="btnScrollDown" aria-label="向下滚动">↓</button>
+    </div>
+  </section>
+
+  <!-- PROJECT INTRO / LANDING -->
+  <section id="projectIntro" class="project-intro">
+    <div class="pi-aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span></div>
+    <div class="pi-grid" aria-hidden="true"></div>
+    <div class="pi-orbit" aria-hidden="true">
+      <svg viewBox="0 0 400 400">
+        <g class="spin">
+          <circle class="por" cx="200" cy="200" r="192"/>
+          <circle class="por acc" cx="200" cy="200" r="192" stroke-dasharray="3 14"/>
+          <circle class="por" cx="200" cy="200" r="140"/>
+        </g>
+        <g class="spin rev">
+          <circle class="por" cx="200" cy="200" r="166" stroke-dasharray="2 10"/>
+          <circle class="por acc" cx="200" cy="200" r="112" stroke-dasharray="5 9"/>
+        </g>
+        <circle class="por acc" cx="200" cy="8" r="4"/>
+        <circle class="por acc" cx="392" cy="200" r="3"/>
+      </svg>
+    </div>
+    <div class="pi-spot" aria-hidden="true"></div>
+    <div class="pi-ghost" id="piGhost">01</div>
+    <div class="pi-inner">
+      <div class="pi-left">
+        <div class="pi-code" id="piCode">PROJECT 01</div>
+        <div class="pi-en" id="piEn">XIAOMI EV SERVICE</div>
+        <div class="pi-cn" id="piCn">小米汽车售后服务包</div>
+        <div class="pi-tag" id="piTag">市场分析及产品优化 · 服务策略全景</div>
+        <div class="pi-chips" id="piChips"></div>
+        <div class="pi-meta" id="piMeta"></div>
+        <div class="pi-actions">
+          <button class="btn-back" id="btnIntroBack">← 返回项目选择</button>
+          <button class="btn-enter" id="btnEnter">进入作品
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="pi-right">
+        <div class="pi-hl-title">项目要点 · Key Points</div>
+        <div class="pi-highlights" id="piHighlights"></div>
+        <div class="pi-note" id="piNote"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRANSITION LOADER -->
+  <div id="loader" class="loader">
+    <div class="loader-bg"></div>
+    <div class="spinner">
+      <div class="arc a1"></div>
+      <div class="arc a2"></div>
+      <div class="arc a3"></div>
+      <div class="loader-core">
+        <div class="loader-num" id="loaderNum">00</div>
+        <div class="loader-label">Loading</div>
+      </div>
+    </div>
+    <div class="loader-icons">
+      <div class="icon-chip" id="chipCar">
+        <svg viewBox="0 0 24 24"><path d="M14 16H9l-3 2.5V16H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2z"/><circle cx="6.5" cy="14" r="1.5"/><circle cx="13.5" cy="14" r="1.5"/><path d="M4 9h9"/><path d="M15 9l2-2h3"/></svg>
+        XIAOMI EV
+      </div>
+      <div class="icon-chip" id="chipRadar">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3"/><path d="M12 19v3"/><path d="M2 12h3"/><path d="M19 12h3"/><path d="M4.93 4.93l2.12 2.12"/><path d="M16.95 16.95l2.12 2.12"/><path d="M4.93 19.07l2.12-2.12"/><path d="M16.95 7.05l2.12-2.12"/></svg>
+        TREND RADAR
+      </div>
+    </div>
+    <div class="loader-progress"><span id="loaderBar"></span></div>
+  </div>
+
+  <script>
+    /* ---------- Data ---------- */
+    const pages = [
+      { src: "assets_hd/page-01.webp", label: "封面", section: "" },
+      { src: "assets_hd/page-02.webp", label: "章节页", section: "01 小米汽车售后服务包" },
+      { src: "assets_hd/page-03.webp", label: "内容", section: "01 小米汽车售后服务包" },
+      { src: "assets_hd/page-04.webp", label: "章节页", section: "02 小米无忧服务包海报设计" },
+      { src: "assets_hd/page-05.webp", label: "内容", section: "02 小米无忧服务包海报设计" },
+      { src: "assets_hd/page-06.webp", label: "内容", section: "02 小米无忧服务包海报设计" },
+      { src: "assets_hd/page-07.webp", label: "内容", section: "02 小米无忧服务包海报设计" },
+      { src: "assets_hd/page-08.webp", label: "章节页", section: "03 抖好鸟热点挖掘平台" },
+      { src: "assets_hd/page-09.webp", label: "内容", section: "03 抖好鸟热点挖掘平台" },
+      { src: "assets_hd/page-10.webp", label: "内容", section: "03 抖好鸟热点挖掘平台" },
+      { src: "assets_hd/page-11.webp", label: "内容", section: "03 抖好鸟热点挖掘平台" }
+    ];
+
+    /* ---------- Pick the asset tier the screen can actually resolve ----------
+       Three renders of the same pages ship with the site:
+         assets/     1241 px  ·  4.8 MB   (150 DPI)
+         assets_hi/  2481 px  · 16   MB   (300 DPI)
+         assets_hd/  4961 px  · 46   MB   (600 DPI)
+       Serving the 600 DPI masters to a phone means a 46 MB download and eleven
+       4961x7016 bitmaps decoded at once — on a handset that is a very long wait at
+       best and an out-of-memory tab kill at worst. Both are read as "the link does
+       not open". So the tier is chosen from the device pixels the page image really
+       has to fill, and the boot gate then preloads exactly that tier — the
+       "100% means everything is ready" promise stays true, just against a set that
+       matches the screen. Thresholds carry ~6% headroom so a 414x3 phone still
+       lands on the light tier instead of stepping up to 16 MB.
+       All other code reads pages[].src, so this single rewrite covers the viewer,
+       the neighbour preload and the boot queue alike. */
+    const DPR = Math.min(window.devicePixelRatio || 1, 3);
+    const NEED_PX = Math.round(Math.max(window.innerWidth || 1, 1) * DPR);
+    const ASSET_TIER = NEED_PX <= 1315 ? '' : NEED_PX <= 2630 ? '_hi' : '_hd';
+    for (const p of pages) p.src = 'assets' + ASSET_TIER + '/' + p.src.split('/').pop();
+
+    const sectionJump = [
+      { name: "01", index: 2, title: "小米汽车售后服务包" },
+      { name: "02", index: 4, title: "小米无忧服务包海报设计" },
+      { name: "03", index: 8, title: "抖好鸟热点挖掘平台" }
+    ];
+
+    /* ---------- DOM ---------- */
+    const home = document.getElementById('home');
+    const viewer = document.getElementById('viewer');
+    const pageStage = document.getElementById('pageStage');
+    const pageImg = document.getElementById('pageImg');
+    const curPageEl = document.getElementById('curPage');
+    const totPageEl = document.getElementById('totPage');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+    const btnHome = document.getElementById('btnHome');
+    const sectionPill = document.getElementById('sectionPill');
+    const viewerWatermark = document.getElementById('viewerWatermark');
+    const btnZoomIn = document.getElementById('btnZoomIn');
+    const btnZoomOut = document.getElementById('btnZoomOut');
+    const btnZoomReset = document.getElementById('btnZoomReset');
+    const zoomLevel = document.getElementById('zoomLevel');
+    const scrollNav = document.getElementById('scrollNav');
+    const btnScrollUp = document.getElementById('btnScrollUp');
+    const btnScrollDown = document.getElementById('btnScrollDown');
+    const loader = document.getElementById('loader');
+    const loaderNum = document.getElementById('loaderNum');
+    const loaderBar = document.getElementById('loaderBar');
+    const chipCar = document.getElementById('chipCar');
+    const chipRadar = document.getElementById('chipRadar');
+
+    /* project intro screen */
+    const projectIntro = document.getElementById('projectIntro');
+    const piGhost = document.getElementById('piGhost');
+    const piCode = document.getElementById('piCode');
+    const piEn = document.getElementById('piEn');
+    const piCn = document.getElementById('piCn');
+    const piTag = document.getElementById('piTag');
+    const piChips = document.getElementById('piChips');
+    const piHighlights = document.getElementById('piHighlights');
+    const piNote = document.getElementById('piNote');
+    const piMeta = document.getElementById('piMeta');
+    const btnEnter = document.getElementById('btnEnter');
+    const btnIntroBack = document.getElementById('btnIntroBack');
+    const piSpot = document.querySelector('.pi-spot');
+    const piInner = document.querySelector('.pi-inner');
+    const cursorGlow = document.querySelector('.cursor-glow');
+    const cursorLens = document.querySelector('.cursor-lens');
+
+    const ACCENTS = { blue: '#3b6cff', purple: '#a855f7', cyan: '#22d3ee' };
+    const projectMeta = {
+      '01': {
+        en: 'XIAOMI EV SERVICE', cn: '小米汽车售后服务包',
+        tag: '市场分析及产品优化 · 服务策略全景',
+        chips: ['Market Analysis', 'Service Design', '2026'],
+        highlights: ['市场趋势概况分析', '新能源 / ICE / BEV 品牌权益总览', '三电质保年限对比', '权益对标矩阵速读'],
+        note: '主线：从「权益对标」到「道路救援差异化定位」，再到小米服务包优化启示。',
+        meta: [['章节', '01'], ['篇幅', '2 页 · P02–P03'], ['定位', '服务策略全景']]
+      },
+      '02': {
+        en: 'WORRY-FREE POSTER', cn: '小米无忧服务包海报设计',
+        tag: '平台运营宣传海报 · AIDA 转化海报',
+        chips: ['Poster', 'AIDA', 'Brand'],
+        highlights: ['全系车型统一强化（SU7 / Ultra / YU7 / GT）', '免费前接送车 · 全车安全检测', '道路救援响应提速 · 独立救援部门', '所有加购均提供官方质保'],
+        note: '核心策略：不打价格战，只做价值战。',
+        meta: [['章节', '02'], ['篇幅', '4 页 · P04–P07'], ['定位', 'AIDA 转化海报']]
+      },
+      '03': {
+        en: 'DOUHAONIAO ENGINE', cn: '抖好鸟热点挖掘平台',
+        tag: 'AI 市场相结合 · 热点 + 内容 + 数据分析',
+        chips: ['AI Engine', 'Trend Radar', 'Data'],
+        highlights: ['热点驱动的抖音文案投放工作台', '对接抖音 / ChatGPT 企业版官方 API', 'Redis 缓存 · 低成本可控', '实时预测监控，驱动用户裂变'],
+        note: '#1973 — DOUHAONIAO ENGINE · 长页呈现系统架构与热点排序规划。',
+        meta: [['章节', '03'], ['篇幅', '4 页 · P08–P11'], ['定位', '热点内容引擎']]
+      }
+    };
+    let introTarget = 0;
+
+    let currentIndex = 0;
+    let isAnimating = false;
+    let zoom = 1;                       // 1 = fit width (fullscreen); >1 = zoomed in
+    const MIN_ZOOM = 1, MAX_ZOOM = 4, ZOOM_STEP = 0.25;
+
+    totPageEl.textContent = String(pages.length).padStart(2, '0');
+
+    /* ---------- Helpers ---------- */
+    function pad(n) { return String(n + 1).padStart(2, '0'); }
+    function getDirection(from, to) {
+      if (to > from) return 'right';
+      if (to < from) return 'left';
+      return 'bottom';
+    }
+    function currentSection() {
+      const sec = pages[currentIndex].section;
+      if (!sec) return '封面';
+      const code = sec.slice(0, 2);
+      return sec;
+    }
+    function currentShortSection() {
+      if (currentIndex === 0) return '封面';
+      return pages[currentIndex].section.slice(0, 2);
+    }
+
+    /* ---------- Loader / transition ---------- */
+    /* Decode an image URL and resolve only once it is fully ready, so the swap paints
+       the new artwork on its very first frame (no blank / white flash). */
+    const decodedSrc = new Set();
+    function decodeSrc(src) {
+      if (decodedSrc.has(src)) return Promise.resolve();
+      return new Promise(resolve => {
+        const im = new Image();
+        let done = false;
+        const fin = () => { if (done) return; done = true; decodedSrc.add(src); resolve(); };
+        im.onload = fin; im.onerror = fin;
+        im.src = src;
+        if (im.decode) im.decode().then(fin).catch(fin);
+      });
+    }
+
+    /* Swap two screens instantly (no cross-fade). Done while the opaque loader covers
+       the viewport, so the viewer/intro never sits half-transparent — that half-fade
+       was the source of the flicker. */
+    function setScreen(fromEl, toEl) {
+      fromEl.style.transition = 'none'; toEl.style.transition = 'none';
+      fromEl.classList.remove('active'); toEl.classList.add('active');
+      void toEl.offsetWidth;
+      fromEl.style.transition = ''; toEl.style.transition = '';
+    }
+
+    function showLoader(targetIndex, onComplete, waitSrc) {
+      if (isAnimating) return;
+      isAnimating = true;
+
+      const targetSection = pages[targetIndex].section || '';
+      const secCode = targetSection.slice(0, 2) || '00';
+
+      loaderNum.textContent = secCode;
+      loader.classList.add('show');
+      chipCar.classList.toggle('active', secCode === '01' || secCode === '02');
+      chipRadar.classList.toggle('active', secCode === '03');
+
+      let progress = 0;
+      const barInterval = setInterval(() => {
+        progress += Math.random() * 26 + 16;
+        if (progress >= 100) progress = 100;
+        loaderBar.style.width = progress + '%';
+      }, 55);
+
+      // Wait for BOTH a minimum animation time AND the target image being decoded.
+      // The boot gate warms every page up front, so in practice the decode is already
+      // done and this minimum is all that shows — keep it short so paging stays snappy.
+      // When a page genuinely is not ready yet, `ready` holds the swap back regardless.
+      const minTime = new Promise(res => setTimeout(res, 420));
+      const ready = waitSrc ? decodeSrc(waitSrc) : Promise.resolve();
+      Promise.all([minTime, ready]).then(() => {
+        clearInterval(barInterval);
+        loaderBar.style.width = '100%';
+        // swap the content while the loader is fully opaque → nothing flashes through
+        onComplete();
+        requestAnimationFrame(() => {
+          loader.classList.remove('show');
+          loaderBar.style.width = '0%';
+          chipCar.classList.remove('active');
+          chipRadar.classList.remove('active');
+          setTimeout(() => { isAnimating = false; }, 280);
+        });
+      });
+    }
+
+    /* ---------- Navigation ---------- */
+    function updatePageImage(index, direction) {
+      pageImg.src = pages[index].src;
+      curPageEl.textContent = pad(index);
+      sectionPill.textContent = currentSection();
+      viewerWatermark.textContent = pages[index].section ? pages[index].section.slice(0, 2) : '00';
+      btnPrev.disabled = index === 0;
+      btnNext.disabled = index === pages.length - 1;
+      // every page starts at fit-width / top
+      zoom = 1; applyZoom();
+      pageStage.scrollTop = 0; pageStage.scrollLeft = 0;
+    }
+
+    /* ---------- Zoom + scroll tools ---------- */
+    function applyZoom() {
+      pageImg.style.width = (100 * zoom) + '%';
+      pageImg.classList.toggle('zoomed', zoom > 1.001);
+      zoomLevel.textContent = Math.round(zoom * 100) + '%';
+    }
+    function setZoom(v) {
+      zoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, Math.round(v * 100) / 100));
+      applyZoom();
+      updateScrollNav();
+      updateScrollButtons();
+    }
+    function zoomIn() { setZoom(zoom + ZOOM_STEP); }
+    function zoomOut() { setZoom(zoom - ZOOM_STEP); }
+    function resetZoom() { setZoom(1); }
+
+    function updateScrollNav() {
+      const overflow = (pageStage.scrollHeight > pageStage.clientHeight + 4)
+                    || (pageStage.scrollWidth > pageStage.clientWidth + 4);
+      scrollNav.classList.toggle('show', overflow && viewer.classList.contains('active'));
+    }
+    function updateScrollButtons() {
+      btnScrollUp.disabled = pageStage.scrollTop <= 2;
+      btnScrollDown.disabled = pageStage.scrollTop + pageStage.clientHeight >= pageStage.scrollHeight - 2;
+    }
+    function scrollByViewport(dir) {
+      pageStage.scrollBy({ top: dir * pageStage.clientHeight * 0.85, behavior: 'smooth' });
+    }
+
+    function goToPage(index, direction) {
+      if (index < 0 || index >= pages.length || index === currentIndex) return;
+      const dir = direction || getDirection(currentIndex, index);
+      const isFromHome = !viewer.classList.contains('active');
+      showLoader(index, () => {
+        if (isFromHome) setScreen(home, viewer);
+        currentIndex = index;
+        updatePageImage(index, dir);
+        // slide the new page in: commit the hidden state, then release it
+        pageStage.classList.add('from-' + dir);
+        void pageStage.offsetWidth;
+        pageStage.classList.remove('from-' + dir);
+      }, pages[index].src);
+    }
+
+    function prevPage() {
+      if (currentIndex > 0) goToPage(currentIndex - 1, 'left');
+    }
+    function nextPage() {
+      if (currentIndex < pages.length - 1) goToPage(currentIndex + 1, 'right');
+    }
+
+    function goHome() {
+      if (isAnimating) return;
+      showLoader(0, () => {
+        setScreen(viewer, home);
+        currentIndex = 0;
+        updatePageImage(0, 'top');
+        scrollNav.classList.remove('show');
+      }, pages[0].src);
+    }
+
+    /* ---------- Events ---------- */
+    /* short text-scramble used when the landing screen opens */
+    const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*';
+    function scrambleText(el, finalText, dur) {
+      if (el._scrambleRaf) cancelAnimationFrame(el._scrambleRaf);
+      const len = finalText.length, start = performance.now();
+      const tick = t => {
+        const p = Math.min(1, (t - start) / dur);
+        const settled = Math.floor(p * len);
+        let out = finalText.slice(0, settled);
+        for (let i = settled; i < len; i++) {
+          out += finalText[i] === ' ' ? ' ' : SCRAMBLE_CHARS[(Math.random() * SCRAMBLE_CHARS.length) | 0];
+        }
+        el.textContent = out;
+        if (p < 1) el._scrambleRaf = requestAnimationFrame(tick);
+        else { el.textContent = finalText; el._scrambleRaf = 0; }
+      };
+      el._scrambleRaf = requestAnimationFrame(tick);
+    }
+
+    function openProjectIntro(card) {
+      const code = card.dataset.section;
+      const m = projectMeta[code];
+      if (!m) return;
+      const accent = ACCENTS[card.dataset.accent] || '#8b5cf6';
+      projectIntro.style.setProperty('--acc', accent);
+      // centre the spotlight by default (desktop cursor will take over on move)
+      piSpot.style.transform = `translate(${innerWidth / 2}px, ${innerHeight * 0.46}px) translate(-50%, -50%)`;
+      piGhost.textContent = code;
+      piCode.textContent = 'PROJECT ' + code;
+      scrambleText(piEn, m.en, 620);
+      piCn.textContent = m.cn;
+      piTag.textContent = m.tag;
+      piChips.innerHTML = m.chips.map(c => `<span>${c}</span>`).join('');
+      // project-specific key points (grounded in each project's own content)
+      piHighlights.innerHTML = (m.highlights || []).map((h, i) =>
+        `<div class="pi-hl"><span class="hl-i">${String(i + 1).padStart(2, '0')}</span><span class="hl-t">${h}</span></div>`
+      ).join('');
+      piNote.textContent = m.note || '';
+      piMeta.innerHTML = (m.meta || []).map(([k, v]) => `<span>${k} <b>${v}</b></span>`).join('');
+      introTarget = parseInt(card.dataset.target, 10);
+      // circular reveal expanding from the clicked card's centre
+      const r = card.getBoundingClientRect();
+      const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      const R = Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy)) + 60;
+      projectIntro.style.transition = 'none';
+      projectIntro.style.webkitClipPath = `circle(0px at ${cx}px ${cy}px)`;
+      projectIntro.style.clipPath = `circle(0px at ${cx}px ${cy}px)`;
+      void projectIntro.offsetWidth; // force reflow
+      projectIntro.style.transition = '-webkit-clip-path .75s cubic-bezier(.7,0,.2,1), clip-path .75s cubic-bezier(.7,0,.2,1)';
+      projectIntro.style.webkitClipPath = `circle(${R}px at ${cx}px ${cy}px)`;
+      projectIntro.style.clipPath = `circle(${R}px at ${cx}px ${cy}px)`;
+      projectIntro.classList.add('active');
+    }
+    function closeProjectIntro() {
+      projectIntro.style.webkitClipPath = 'circle(0px at 50% 50%)';
+      projectIntro.style.clipPath = 'circle(0px at 50% 50%)';
+      piInner.style.transform = '';
+      // keep .active until the circle has essentially closed, so the content never
+      // pops out while the reveal is still shrinking
+      setTimeout(() => projectIntro.classList.remove('active'), 680);
+    }
+
+    /* Toggle a body flag whenever an immersive screen opens/closes, so decorative
+       animations (bg / orbs / particle canvas) can pause and keep transitions smooth. */
+    const syncEnv = () => {
+      const viewerOn = viewer.classList.contains('active');
+      document.body.classList.toggle('off-home',
+        viewerOn || projectIntro.classList.contains('active') || loader.classList.contains('show'));
+      document.body.classList.toggle('in-viewer', viewerOn);
+    };
+    const envObserver = new MutationObserver(syncEnv);
+    envObserver.observe(viewer, { attributes: true, attributeFilter: ['class'] });
+    envObserver.observe(projectIntro, { attributes: true, attributeFilter: ['class'] });
+    envObserver.observe(loader, { attributes: true, attributeFilter: ['class'] });
+    syncEnv();
+
+    document.querySelectorAll('.toc-card').forEach(card => {
+      card.addEventListener('click', () => openProjectIntro(card));
+    });
+
+    btnEnter.addEventListener('click', () => {
+      closeProjectIntro();
+      goToPage(introTarget, 'right');
+    });
+    btnIntroBack.addEventListener('click', closeProjectIntro);
+
+    // clicking the dimmed backdrop (anywhere outside the info panel) closes the landing screen
+    projectIntro.addEventListener('click', e => {
+      if (!e.target.closest('.pi-inner')) closeProjectIntro();
+    });
+
+    btnPrev.addEventListener('click', prevPage);
+    btnNext.addEventListener('click', nextPage);
+    btnHome.addEventListener('click', goHome);
+
+    document.addEventListener('keydown', e => {
+      if (projectIntro.classList.contains('active')) {
+        if (e.key === 'Enter' || e.key === 'ArrowRight') { e.preventDefault(); closeProjectIntro(); goToPage(introTarget, 'right'); }
+        if (e.key === 'Escape') { e.preventDefault(); closeProjectIntro(); }
+        return;
+      }
+      if (!viewer.classList.contains('active')) return;
+      if (e.key === 'ArrowLeft') { e.preventDefault(); prevPage(); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); nextPage(); }
+      if (e.key === 'Escape') { e.preventDefault(); goHome(); }
+      // vertical scroll within a long / zoomed image
+      if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); scrollByViewport(-1); }
+      if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); scrollByViewport(1); }
+      // zoom shortcuts
+      if (e.key === '+' || e.key === '=') { e.preventDefault(); zoomIn(); }
+      if (e.key === '-' || e.key === '_') { e.preventDefault(); zoomOut(); }
+      if (e.key === '0') { e.preventDefault(); resetZoom(); }
+    });
+
+    /* Custom cursor: glow + magnifier lens follows the cursor strictly (desktop only) */
+    let glowReady = false;
+    window.addEventListener('mousemove', e => {
+      if (!glowReady && !('ontouchstart' in window)) { document.body.classList.add('cursor-on'); glowReady = true; }
+      cursorGlow.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+      // magnifier icon tracks the cursor exactly (no easing → no lag)
+      cursorLens.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+      // depth parallax for the backdrop layers (grid + radar motif)
+      document.body.style.setProperty('--px', ((e.clientX / innerWidth - .5) * 2).toFixed(3));
+      document.body.style.setProperty('--py', ((e.clientY / innerHeight - .5) * 2).toFixed(3));
+      // cursor spotlight + gentle 3D tilt inside the project landing screen
+      if (projectIntro.classList.contains('active')) {
+        piSpot.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+        const cxI = innerWidth / 2, cyI = innerHeight / 2;
+        const rx = ((e.clientY - cyI) / cyI) * -3.5;
+        const ry = ((e.clientX - cxI) / cxI) * 4.5;
+        piInner.style.transform = `perspective(1100px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      }
+    }, { passive: true });
+    /* magnifier lens grows over interactive / inspectable areas */
+    document.querySelectorAll('.toc-card').forEach(c => {
+      c.addEventListener('mouseenter', () => cursorLens.classList.add('grow'));
+      c.addEventListener('mouseleave', () => cursorLens.classList.remove('grow'));
+    });
+    pageStage.addEventListener('mouseenter', () => cursorLens.classList.add('grow'));
+    pageStage.addEventListener('mouseleave', () => cursorLens.classList.remove('grow'));
+
+    /* Zoom toolbar */
+    btnZoomIn.addEventListener('click', zoomIn);
+    btnZoomOut.addEventListener('click', zoomOut);
+    btnZoomReset.addEventListener('click', resetZoom);
+
+    /* Vertical scroll buttons (for long / zoomed images) */
+    btnScrollUp.addEventListener('click', () => scrollByViewport(-1));
+    btnScrollDown.addEventListener('click', () => scrollByViewport(1));
+    pageStage.addEventListener('scroll', updateScrollButtons, { passive: true });
+
+    /* Wheel = scroll; Ctrl/Cmd + Wheel = zoom */
+    pageStage.addEventListener('wheel', e => {
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+        setZoom(zoom + (e.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP));
+      }
+    }, { passive: false });
+
+    /* Double-click toggles 1x / 2x */
+    pageImg.addEventListener('dblclick', () => setZoom(zoom > 1.001 ? 1 : 2));
+
+    /* Drag to pan when zoomed */
+    let dragging = false, dragX = 0, dragY = 0;
+    pageImg.addEventListener('pointerdown', e => {
+      if (zoom <= 1.001) return;
+      dragging = true; dragX = e.clientX; dragY = e.clientY;
+      try { pageImg.setPointerCapture(e.pointerId); } catch (_) {}
+    });
+    pageImg.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      pageStage.scrollLeft -= (e.clientX - dragX);
+      pageStage.scrollTop  -= (e.clientY - dragY);
+      dragX = e.clientX; dragY = e.clientY;
+    });
+    pageImg.addEventListener('pointerup', () => { dragging = false; });
+    pageImg.addEventListener('pointercancel', () => { dragging = false; });
+
+    /* Touch / swipe (+ pinch to zoom) */
+    let touchStartX = 0, touchStartY = 0, pinching = false, pinchStartDist = 0, pinchStartZoom = 1;
+    pageStage.addEventListener('touchstart', e => {
+      if (e.touches.length === 2) {
+        pinching = true;
+        pinchStartDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY);
+        pinchStartZoom = zoom;
+      } else {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      }
+    }, { passive: true });
+    pageStage.addEventListener('touchmove', e => {
+      if (e.touches.length === 2 && pinchStartDist > 0) {
+        const d = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY);
+        setZoom(pinchStartZoom * d / pinchStartDist);
+      }
+    }, { passive: true });
+    pageStage.addEventListener('touchend', e => {
+      if (!viewer.classList.contains('active')) return;
+      if (pinching) { pinching = false; return; }
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      const dy = e.changedTouches[0].screenY - touchStartY;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+        dx > 0 ? prevPage() : nextPage();
+      }
+    }, { passive: true });
+
+    /* Preload neighbors for current page */
+    function preload(i) {
+      if (i < 0 || i >= pages.length) return;
+      const img = new Image(); img.src = pages[i].src;
+    }
+    function preloadNeighbors() {
+      preload(currentIndex - 1); preload(currentIndex + 1);
+    }
+    pageImg.addEventListener('load', () => {
+      preloadNeighbors();
+      requestAnimationFrame(() => { updateScrollNav(); updateScrollButtons(); });
+    });
+    window.addEventListener('resize', () => { updateScrollNav(); updateScrollButtons(); });
+
+    /* Initialize */
+    pageImg.decoding = 'async';
+    updatePageImage(0, 'right');
+    preloadNeighbors();
+  </script>
+
+  <script>
+    /* ---------- Dynamic cover background: particle network ---------- */
+    (function () {
+      const canvas = document.getElementById('bgCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w, h, dpr, dots = [], raf;
+      const mouse = { x: -9999, y: -9999 };
+
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        w = canvas.width = Math.floor(innerWidth * dpr);
+        h = canvas.height = Math.floor(innerHeight * dpr);
+        canvas.style.width = innerWidth + 'px';
+        canvas.style.height = innerHeight + 'px';
+        const count = Math.max(40, Math.round((innerWidth * innerHeight) / 18000));
+        dots = [];
+        for (let i = 0; i < count; i++) {
+          dots.push({
+            x: Math.random() * w, y: Math.random() * h,
+            vx: (Math.random() - .5) * .25 * dpr, vy: (Math.random() - .5) * .25 * dpr,
+            r: (Math.random() * 1.6 + .6) * dpr
+          });
+        }
+      }
+
+      function step() {
+        raf = requestAnimationFrame(step);
+        // pause heavy canvas work while an immersive screen is open (smoother transitions)
+        if (document.body.classList.contains('off-home')) return;
+        ctx.clearRect(0, 0, w, h);
+        const linkDist = 130 * dpr;
+        for (let i = 0; i < dots.length; i++) {
+          const d = dots[i];
+          d.x += d.vx; d.y += d.vy;
+          if (d.x < 0 || d.x > w) d.vx *= -1;
+          if (d.y < 0 || d.y > h) d.vy *= -1;
+          const mdx = mouse.x - d.x, mdy = mouse.y - d.y;
+          const md = Math.hypot(mdx, mdy);
+          if (md < 220 * dpr) { d.x += mdx * .0012; d.y += mdy * .0012; }
+
+          for (let j = i + 1; j < dots.length; j++) {
+            const e = dots[j];
+            const dx = d.x - e.x, dy = d.y - e.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < linkDist) {
+              const a = (1 - dist / linkDist) * .5;
+              ctx.strokeStyle = 'rgba(130,150,255,' + a + ')';
+              ctx.lineWidth = dpr * .6;
+              ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(e.x, e.y); ctx.stroke();
+            }
+          }
+          ctx.beginPath();
+          ctx.fillStyle = 'rgba(170,190,255,.8)';
+          ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2); ctx.fill();
+        }
+      }
+
+      window.addEventListener('resize', resize);
+      window.addEventListener('mousemove', e => { mouse.x = e.clientX * dpr; mouse.y = e.clientY * dpr; });
+      window.addEventListener('mouseout', () => { mouse.x = -9999; mouse.y = -9999; });
+      resize();
+      step();
+
+      /* Mouse parallax for hero */
+      const hero = document.querySelector('.hero');
+      window.addEventListener('mousemove', e => {
+        const cx = (e.clientX / innerWidth - .5);
+        const cy = (e.clientY / innerHeight - .5);
+        if (hero) hero.style.transform = 'translate(' + (cx * 12) + 'px,' + (cy * 8) + 'px)';
+      });
+
+      /* 3D tilt + spotlight on TOC cards */
+      document.querySelectorAll('.toc-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+          const r = card.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width;
+          const py = (e.clientY - r.top) / r.height;
+          card.style.setProperty('--mx', (px * 100) + '%');
+          card.style.setProperty('--my', (py * 100) + '%');
+          const rx = (py - .5) * -8, ry = (px - .5) * 10;
+          const mtx = (px - .5) * 9, mty = (py - .5) * 6;   // magnetic pull toward cursor
+          card.style.transform = 'perspective(800px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) translate(' + mtx + 'px,' + (mty - 4) + 'px)';
+        });
+        card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+      });
+    })();
+  </script>
+
+  <script>
+    /* ---------- Boot / entrance sequence ----------
+       A real gate rather than a cosmetic loader. The screen idles indefinitely until
+       the visitor presses START; only then are the artwork pages fetched. They are
+       fetched ONE AT A TIME on purpose — eleven ~5000x7000 PNGs decoding in parallel
+       is a memory spike, and a main-thread stall here would stutter the very
+       animation that is supposed to be covering for it.
+
+       Because nothing is preloaded before the press and every tick of the counter
+       maps to a file that actually arrived, "100%" genuinely means "everything from
+       here on is instant". The head failsafe covers only the case where this script
+       never ran at all. */
+    (function () {
+      const root = document.documentElement;
+      const boot = document.getElementById('boot');
+      if (!boot) { root.classList.remove('booting'); return; }
+      window.__bootReady = true;              // tells the head failsafe to stand down
+
+      const pctEl    = document.getElementById('bootPct');
+      const pctWrap  = document.getElementById('bootPctWrap');
+      const barEl    = document.getElementById('bootBarFill');
+      const logEl    = document.getElementById('bootLog');
+      const arcEl    = document.getElementById('bootArc');
+      const hintEl   = document.getElementById('bootHint');
+      const flashEl  = document.getElementById('bootFlash');
+      const startBtn = document.getElementById('bootStart');
+      const ringWrap = document.getElementById('bootRing');
+      const coreTag  = document.getElementById('bootCoreTag');
+      const clockEl  = document.getElementById('telClock');
+      const tzEl     = document.getElementById('telTz');
+      const resEl    = document.getElementById('telRes');
+      const pagesEl  = document.getElementById('telPages');
+      const tierEl   = document.getElementById('telTier');
+      const upEl     = document.getElementById('telUptime');
+      const locEl    = document.getElementById('telLocale');
+      const netEl    = document.getElementById('telNet');
+      const gateEl   = document.getElementById('telGate');
+      const telEl    = document.getElementById('bootTelemetry');
+      const streamEl = document.getElementById('railStream');
+
+      const reduce   = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const EXIT_MS  = reduce ? 300 : 1180;   // collapse + hand-over to the cover
+      const TYPE_MS  = reduce ? 3 : 11;       // per-character typing speed
+      const LINE_GAP = reduce ? 20 : 70;      // pause between log lines
+      const ITEM_MS  = 6000;                  // per-file guard against a hung read
+
+      const CIRC = 2 * Math.PI * 108;         // matches r="108" in the markup
+      if (arcEl) {
+        arcEl.style.strokeDasharray = CIRC;
+        arcEl.style.strokeDashoffset = CIRC;  // ring stays empty until START
+      }
+
+      /* every page the site can ever display — this is what has to be "deployed" */
+      const all   = (typeof pages !== 'undefined' && Array.isArray(pages)) ? pages : [];
+      const queue = all.map(p => p.src);
+      const total = Math.max(queue.length, 1);
+
+      let loaded = 0, started = false, logDone = false, finished = false;
+      let logStep = 0, hintShown = '';
+      const liveRows = [];
+      const LOG_STEPS = 5;                    // lines in the load sequence
+
+      /* The displayed percentage takes the LOWER of two truths: how many files have
+         actually arrived, and how far the status log has read. Files usually land far
+         faster than the log (they are local), and a bar that hits 100% while the screen
+         still says "deploying" reads as a stall. Taking the minimum keeps the bar
+         underneath reality at all times and lands both on 100% together. */
+      function progressPct() {
+        return Math.min((loaded / total) * 100, (logStep / LOG_STEPS) * 100);
+      }
+
+      /* --- paint counter, bar, ring, live status and the readiness hint --- */
+      function render(p) {
+        const v = Math.max(0, Math.min(100, p));
+        if (pctEl) pctEl.textContent = String(Math.round(v)).padStart(2, '0');
+        if (barEl) barEl.style.width = v + '%';
+        if (arcEl) arcEl.style.strokeDashoffset = CIRC * (1 - v / 100);
+        const pending = loaded < total;
+        for (const em of liveRows) {
+          em.textContent = pending ? (loaded + '/' + total) : 'OK';
+          em.classList.toggle('pending', pending);
+        }
+        if (hintEl && started) {
+          // files usually land before the log finishes reading, so say what the bar is
+          // actually waiting on instead of reporting a count the bar disagrees with
+          const txt = loaded >= total
+            ? '资源已全部就绪 · 正在初始化视图'
+            : '已加载 ' + loaded + ' / ' + total + ' 项资源';
+          if (txt !== hintShown) { hintShown = txt; hintEl.textContent = txt; }
+        }
+        tap();
+      }
+
+      /* --- rail readouts. Everything here is a real value taken from the page:
+             nothing is animated toward a number it has not actually reached. --- */
+      function tap() {
+        const state = finished ? 'COMPLETE' : started ? 'DEPLOYING' : 'STANDBY';
+        if (telEl) telEl.textContent = 'LINK ' + loaded + '/' + total + ' · ' + state;
+        if (gateEl) gateEl.textContent = finished ? 'OPEN' : started ? 'LOADING' : 'STANDBY';
+      }
+
+      function startClock() {
+        const off = -new Date().getTimezoneOffset() / 60;
+        if (tzEl) tzEl.textContent = 'UTC' + (off < 0 ? '−' : '+') + String(Math.abs(off)).padStart(2, '0');
+        if (pagesEl) pagesEl.textContent = String(total);
+        // read the tier straight off the queue rather than trusting a flag: this shows
+        // exactly which asset set the gate is about to download
+        if (tierEl) {
+          const t = (queue[0] || '').split('/')[0];
+          tierEl.textContent = t === 'assets_hd' ? '600 DPI' : t === 'assets_hi' ? '300 DPI' : '150 DPI';
+        }
+        if (locEl) locEl.textContent = (navigator.language || 'zh-CN').toUpperCase();
+        const net = () => { if (netEl) netEl.textContent = navigator.onLine ? 'ONLINE' : 'OFFLINE'; };
+        net();
+        addEventListener('online', net, { passive: true });
+        addEventListener('offline', net, { passive: true });
+
+        const p2 = n => String(n).padStart(2, '0');
+        const born = Date.now();
+        const paint = () => {
+          const d = new Date();
+          if (clockEl) clockEl.textContent = p2(d.getHours()) + ':' + p2(d.getMinutes()) + ':' + p2(d.getSeconds());
+          if (upEl) {
+            const s = Math.floor((Date.now() - born) / 1000);
+            upEl.textContent = p2(Math.floor(s / 60)) + ':' + p2(s % 60);
+          }
+        };
+        paint();
+        setInterval(paint, 1000);
+      }
+
+      function bindViewport() {
+        const paint = () => { if (resEl) resEl.textContent = innerWidth + '×' + innerHeight; };
+        paint();
+        addEventListener('resize', paint, { passive: true });
+      }
+
+      /* --- datalink column: the row list is emitted twice so that a -50% translate
+             lands on an identical frame and the loop never shows a seam --- */
+      function startStream() {
+        if (!streamEl) return;
+        const rows = [
+          ['RENDER QUEUE', 'OK'], ['TEXTURE CACHE', 'WARM'], ['GLYPH ATLAS', 'SYNCED'],
+          ['PROJECT INDEX', 'MOUNTED'], ['ASSET HASH', 'VERIFIED'], ['LOCALE', 'ZH-CN'],
+          ['ACCENT', '#60A5FA'], ['THEME', 'DEEP-SPACE'], ['LAYOUT ENGINE', 'READY'],
+          ['SCROLL DRIVER', 'IDLE'], ['POINTER', 'TRACKING'], ['BLOOM PASS', 'STANDBY'],
+          ['GRAIN OVERLAY', 'ON'], ['ORBIT RINGS', 'STABLE'], ['NOISE SEED', '0x7A31'],
+          ['FRAME BUDGET', '16.6MS'], ['IDLE TIMER', 'ARMED'], ['GATE STATE', 'AWAITING'],
+          ['ARTWORK PAGES', String(total)], ['SYSTEM CLOCK', 'SYNCED']
+        ];
+        const frag = document.createDocumentFragment();
+        const make = r => {
+          const d = document.createElement('div');
+          d.className = 'r';
+          d.innerHTML = '<span>' + r[0] + '</span><em>' + r[1] + '</em>';
+          return d;
+        };
+        rows.forEach(r => frag.appendChild(make(r)));
+        rows.forEach(r => frag.appendChild(make(r)));
+        streamEl.appendChild(frag);
+      }
+
+      /* --- standby log: what the visitor sees while the gate waits --- */
+      function showIdleLog() {
+        logEl.innerHTML = '';
+        liveRows.length = 0;
+        const a = document.createElement('div');
+        a.className = 'boot-line idle done';
+        a.innerHTML = '<i>&gt;</i><span>SYSTEM STANDBY</span><em>IDLE</em>';
+        const b = document.createElement('div');
+        b.className = 'boot-line idle';
+        b.innerHTML = '<i>&gt;</i><span>AWAITING INPUT</span><span class="cur"></span>';
+        logEl.append(a, b);
+      }
+
+      /* --- one typed log row, shared by idle and load states --- */
+      function typeLine(spec, done) {
+        const row = document.createElement('div');
+        row.className = 'boot-line' + (spec.live ? ' live' : '');
+        row.innerHTML = '<i>&gt;</i><span></span><em></em>';
+        logEl.appendChild(row);
+        const span = row.querySelector('span');
+        const em = row.querySelector('em');
+        if (spec.live) liveRows.push(em); else em.textContent = 'OK';
+        let c = 0;
+        const timer = setInterval(() => {
+          span.textContent = spec.t.slice(0, ++c);
+          if (c >= spec.t.length) {
+            clearInterval(timer);
+            row.classList.add('done');
+            setTimeout(done, LINE_GAP);
+          }
+        }, TYPE_MS);
+      }
+
+      function runLoadLog() {
+        const SEQ = [
+          { t: 'INITIALIZING RENDERER' },
+          { t: 'MOUNTING PROJECT INDEX' },
+          { t: 'DEPLOYING ARTWORK MANIFEST', live: true },
+          { t: 'CALIBRATING VIEWPORT' },
+          { t: 'SYSTEM READY' }
+        ];
+        let i = 0;
+        const next = () => {
+          if (i >= SEQ.length) { logDone = true; logStep = SEQ.length; return; }
+          const idx = i++;
+          typeLine(SEQ[idx], () => { logStep = idx + 1; next(); });
+        };
+        next();
+      }
+
+      /* --- pull every artwork page in, sequentially --- */
+      function preloadAll() {
+        if (!queue.length) { loaded = total; return; }
+        let i = 0;
+        const step = () => {
+          if (i >= queue.length) return;
+          const im = new Image();
+          let settled = false;
+          const settle = () => {
+            if (settled) return;
+            settled = true;
+            loaded++;
+            setTimeout(step, 0);             // yield to the event loop between files
+          };
+          im.onload = settle;
+          im.onerror = settle;               // a missing file must not stall the gate
+          setTimeout(settle, ITEM_MS);       // ...nor may a hung read
+          im.src = queue[i++];
+        };
+        step();
+      }
+
+      function finish() {
+        if (finished) return;
+        finished = true;
+        loaded = total;
+        render(100);
+        boot.classList.add('exit');
+        if (flashEl) flashEl.classList.add('on');
+        // release the cover's staggered entrance NOW rather than at the end, so the
+        // cover rises into place while the shutter is still closing
+        root.classList.remove('booting');
+        setTimeout(() => {
+          boot.style.display = 'none';
+          if (flashEl) flashEl.style.display = 'none';
+        }, EXIT_MS);
+      }
+
+      /* --- START is the only way out of idle --- */
+      function begin() {
+        if (started || finished) return;
+        started = true;
+        if (startBtn) { startBtn.classList.add('gone'); startBtn.disabled = true; }
+        if (ringWrap) ringWrap.classList.add('started');   // reveal the deploy sweep
+        if (pctWrap) pctWrap.classList.remove('idle');
+        if (coreTag) coreTag.textContent = 'EXECUTING · DEPLOY SEQUENCE';
+        if (hintEl) hintEl.textContent = '正在部署作品资源…';
+
+        logEl.classList.add('swap');          // fade the standby log out…
+        setTimeout(() => {
+          logEl.classList.remove('swap');
+          logEl.innerHTML = '';
+          liveRows.length = 0;
+          runLoadLog();                       // …then run the real one
+        }, 150);
+
+        preloadAll();
+
+        // last-resort net for the LOADING phase only — idle stays indefinite by design
+        setTimeout(() => { if (!finished) { logDone = true; finish(); } }, reduce ? 20000 : 60000);
+      }
+
+      /* --- completion poll: enter only once every file is in AND the log has finished --- */
+      function tick() {
+        if (finished) return;
+        if (started) {
+          render(progressPct());
+          if (loaded >= total && logDone) { finish(); return; }
+        }
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+
+      if (startBtn) startBtn.addEventListener('click', begin);
+      document.addEventListener('keydown', e => {
+        if (started || finished) return;
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+          e.preventDefault();
+          begin();
+        }
+      });
+
+      showIdleLog();
+      startClock();
+      bindViewport();
+      startStream();
+      tap();
+      if (hintEl) setTimeout(() => hintEl.classList.add('show'), 500);
+    })();
+  </script>
+</body>
+</html>
