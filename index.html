@@ -1432,24 +1432,24 @@
   <script>
     /* ---------- Data ---------- */
     const pages = [
-      { src: "assets_hd/page-01.webp", label: "封面", section: "" },
-      { src: "assets_hd/page-02.webp", label: "章节页", section: "01 小米汽车售后服务包" },
-      { src: "assets_hd/page-03.webp", label: "内容", section: "01 小米汽车售后服务包" },
-      { src: "assets_hd/page-04.webp", label: "章节页", section: "02 小米无忧服务包海报设计" },
-      { src: "assets_hd/page-05.webp", label: "内容", section: "02 小米无忧服务包海报设计" },
-      { src: "assets_hd/page-06.webp", label: "内容", section: "02 小米无忧服务包海报设计" },
-      { src: "assets_hd/page-07.webp", label: "内容", section: "02 小米无忧服务包海报设计" },
-      { src: "assets_hd/page-08.webp", label: "章节页", section: "03 抖好鸟热点挖掘平台" },
-      { src: "assets_hd/page-09.webp", label: "内容", section: "03 抖好鸟热点挖掘平台" },
-      { src: "assets_hd/page-10.webp", label: "内容", section: "03 抖好鸟热点挖掘平台" },
-      { src: "assets_hd/page-11.webp", label: "内容", section: "03 抖好鸟热点挖掘平台" }
+      { src: "page-01_hd.webp", label: "封面", section: "" },
+      { src: "page-02_hd.webp", label: "章节页", section: "01 小米汽车售后服务包" },
+      { src: "page-03_hd.webp", label: "内容", section: "01 小米汽车售后服务包" },
+      { src: "page-04_hd.webp", label: "章节页", section: "02 小米无忧服务包海报设计" },
+      { src: "page-05_hd.webp", label: "内容", section: "02 小米无忧服务包海报设计" },
+      { src: "page-06_hd.webp", label: "内容", section: "02 小米无忧服务包海报设计" },
+      { src: "page-07_hd.webp", label: "内容", section: "02 小米无忧服务包海报设计" },
+      { src: "page-08_hd.webp", label: "章节页", section: "03 抖好鸟热点挖掘平台" },
+      { src: "page-09_hd.webp", label: "内容", section: "03 抖好鸟热点挖掘平台" },
+      { src: "page-10_hd.webp", label: "内容", section: "03 抖好鸟热点挖掘平台" },
+      { src: "page-11_hd.webp", label: "内容", section: "03 抖好鸟热点挖掘平台" }
     ];
 
     /* ---------- Pick the asset tier the screen can actually resolve ----------
        Three renders of the same pages ship with the site:
-         assets/     1241 px  ·  4.8 MB   (150 DPI)
-         assets_hi/  2481 px  · 16   MB   (300 DPI)
-         assets_hd/  4961 px  · 46   MB   (600 DPI)
+         (flat)  page-NN.webp       1241 px  ·  4.8 MB   (150 DPI)
+         (flat)  page-NN_hi.webp    2481 px  · 16   MB   (300 DPI)
+         (flat)  page-NN_hd.webp    4961 px  · 46   MB   (600 DPI)
        Serving the 600 DPI masters to a phone means a 46 MB download and eleven
        4961x7016 bitmaps decoded at once — on a handset that is a very long wait at
        best and an out-of-memory tab kill at worst. Both are read as "the link does
@@ -1463,7 +1463,7 @@
     const DPR = Math.min(window.devicePixelRatio || 1, 3);
     const NEED_PX = Math.round(Math.max(window.innerWidth || 1, 1) * DPR);
     const ASSET_TIER = NEED_PX <= 1315 ? '' : NEED_PX <= 2630 ? '_hi' : '_hd';
-    for (const p of pages) p.src = 'assets' + ASSET_TIER + '/' + p.src.split('/').pop();
+    for (const p of pages) p.src = p.src.replace(/\.webp$/, ASSET_TIER + '.webp');
 
     const sectionJump = [
       { name: "01", index: 2, title: "小米汽车售后服务包" },
@@ -2136,8 +2136,8 @@
         // read the tier straight off the queue rather than trusting a flag: this shows
         // exactly which asset set the gate is about to download
         if (tierEl) {
-          const t = (queue[0] || '').split('/')[0];
-          tierEl.textContent = t === 'assets_hd' ? '600 DPI' : t === 'assets_hi' ? '300 DPI' : '150 DPI';
+          const q0 = queue[0] || '';
+          tierEl.textContent = /_hd\.webp$/.test(q0) ? '600 DPI' : /_hi\.webp$/.test(q0) ? '300 DPI' : '150 DPI';
         }
         if (locEl) locEl.textContent = (navigator.language || 'zh-CN').toUpperCase();
         const net = () => { if (netEl) netEl.textContent = navigator.onLine ? 'ONLINE' : 'OFFLINE'; };
